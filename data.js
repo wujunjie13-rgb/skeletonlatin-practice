@@ -1,7 +1,112 @@
+// Translations for UI elements
+const translations = {
+    zh: {
+        title: "骨架拉丁命名练习",
+        subtitle: "Skeleton Latin Naming Practice",
+        practiceMode: "练习模式",
+        browseBones: "浏览骨骼",
+        mistakeBank: "错题库",
+        statistics: "统计",
+        showFinnish: "显示芬兰语",
+        autoPronunciation: "自动发音",
+        resetProgress: "重置进度",
+        bodyPartFilter: "身体部位筛选",
+        allParts: "所有部位",
+        inputLatinName: "输入拉丁名称...",
+        submit: "提交",
+        showAnswer: "显示答案",
+        nextQuestion: "下一题",
+        pronunciation: "发音",
+        progress: "进度",
+        allCategories: "所有分类",
+        searchBones: "搜索骨骼名称...",
+        practiceMistakes: "练习错题",
+        clearMistakes: "清空错题库",
+        learningStatistics: "学习统计",
+        totalQuestions: "总题数",
+        accuracy: "正确率",
+        mistakeCount: "错题数",
+        mastered: "已掌握",
+        category: "分类",
+        latinName: "拉丁名",
+        finnishName: "芬兰语",
+        features: "主要特征"
+    },
+    en: {
+        title: "Skeleton Latin Practice",
+        subtitle: "Learn Anatomical Latin Names",
+        practiceMode: "Practice",
+        browseBones: "Browse",
+        mistakeBank: "Mistakes",
+        statistics: "Statistics",
+        showFinnish: "Show Finnish",
+        autoPronunciation: "Auto Pronunciation",
+        resetProgress: "Reset Progress",
+        bodyPartFilter: "Body Part Filter",
+        allParts: "All Parts",
+        inputLatinName: "Enter Latin name...",
+        submit: "Submit",
+        showAnswer: "Show Answer",
+        nextQuestion: "Next",
+        pronunciation: "Pronunciation",
+        progress: "Progress",
+        allCategories: "All Categories",
+        searchBones: "Search bones...",
+        practiceMistakes: "Practice Mistakes",
+        clearMistakes: "Clear Mistakes",
+        learningStatistics: "Learning Statistics",
+        totalQuestions: "Total Questions",
+        accuracy: "Accuracy",
+        mistakeCount: "Mistakes",
+        mastered: "Mastered",
+        category: "Category",
+        latinName: "Latin Name",
+        finnishName: "Finnish",
+        features: "Main Features"
+    },
+    fi: {
+        title: "Luurangon Latinalainen Harjoitus",
+        subtitle: "Opettele Anatomiset Latinalaiset Nimet",
+        practiceMode: "Harjoitus",
+        browseBones: "Selaa",
+        mistakeBank: "Virheet",
+        statistics: "Tilastot",
+        showFinnish: "Näytä suomeksi",
+        autoPronunciation: "Automaattinen Ääntäminen",
+        resetProgress: "Nollaa Edistyminen",
+        bodyPartFilter: "Kehon Osa Suodatin",
+        allParts: "Kaikki Osat",
+        inputLatinName: "Syötä latinalainen nimi...",
+        submit: "Lähetä",
+        showAnswer: "Näytä Vastaus",
+        nextQuestion: "Seuraava",
+        pronunciation: "Ääntäminen",
+        progress: "Edistyminen",
+        allCategories: "Kaikki Kategoriat",
+        searchBones: "Etsi luita...",
+        practiceMistakes: "Harjoittele Virheitä",
+        clearMistakes: "Tyhjennä Virheet",
+        learningStatistics: "Oppimistilastot",
+        totalQuestions: "Kysymyksiä Yhteensä",
+        accuracy: "Tarkkuus",
+        mistakeCount: "Virheet",
+        mastered: "Hallittu",
+        category: "Kategoria",
+        latinName: "Latinalainen Nimi",
+        finnishName: "Suomalainen",
+        features: "Pääpiirteet"
+    }
+};
+
 // Comprehensive skeletal anatomy data with Latin names, Finnish names, and anatomical features
 const skeletalData = {
     skull: {
-        category: "颅骨 (Skull)",
+        category: {
+            zh: "颅骨",
+            en: "Skull",
+            fi: "Kallo"
+        },
+        bodyPart: "head",
         bones: [
             {
                 id: "frontal",
@@ -128,12 +233,26 @@ const skeletalData = {
                 pronunciation: "KON-kah nah-SAH-lis in-FEE-ree-or",
                 features: ["鼻道 (Nasal meatus)"],
                 description: "鼻腔外侧壁的薄骨片"
+            },
+            {
+                id: "hyoid",
+                chinese: "舌骨",
+                latin: "Os hyoideum",
+                finnish: "Kieliluu",
+                pronunciation: "os-hy-OY-day-um",
+                features: ["大角 (Greater horn)", "小角 (Lesser horn)", "体 (Body)"],
+                description: "U形骨，位于颈部，不与其他骨骼直接连接"
             }
         ]
     },
     
     vertebral_column: {
-        category: "脊柱 (Vertebral Column)",
+        category: {
+            zh: "脊柱",
+            en: "Vertebral Column",
+            fi: "Selkäranka"
+        },
+        bodyPart: "trunk",
         bones: [
             {
                 id: "cervical_vertebrae",
@@ -202,7 +321,12 @@ const skeletalData = {
     },
 
     thorax: {
-        category: "胸廓 (Thorax)",
+        category: {
+            zh: "胸廓",
+            en: "Thorax",
+            fi: "Rintakehä"
+        },
+        bodyPart: "trunk",
         bones: [
             {
                 id: "sternum",
@@ -253,7 +377,12 @@ const skeletalData = {
     },
 
     upper_limb: {
-        category: "上肢骨 (Upper Limb)",
+        category: {
+            zh: "上肢骨",
+            en: "Upper Limb",
+            fi: "Yläraaja"
+        },
+        bodyPart: "upper_limb",
         bones: [
             {
                 id: "clavicle",
@@ -389,12 +518,26 @@ const skeletalData = {
                 pronunciation: "fah-LAN-jeez MAH-nus",
                 features: ["近节指骨 (Proximal phalanx)", "中节指骨 (Middle phalanx)", "远节指骨 (Distal phalanx)"],
                 description: "手指的14根指骨"
+            },
+            {
+                id: "sesamoid_hand",
+                chinese: "籽骨（手）",
+                latin: "Ossa sesamoidea manus",
+                finnish: "Seesamiluut (käsi)",
+                pronunciation: "OS-ah seh-sah-MOY-day-ah MAH-nus",
+                features: ["拇指籽骨 (Thumb sesamoids)"],
+                description: "手部的小型籽骨，常见于拇指掌指关节"
             }
         ]
     },
 
     pelvic_girdle: {
-        category: "骨盆带 (Pelvic Girdle)",
+        category: {
+            zh: "骨盆带",
+            en: "Pelvic Girdle",
+            fi: "Lantion Vyöhyke"
+        },
+        bodyPart: "trunk",
         bones: [
             {
                 id: "hip_bone",
@@ -436,7 +579,12 @@ const skeletalData = {
     },
 
     lower_limb: {
-        category: "下肢骨 (Lower Limb)",
+        category: {
+            zh: "下肢骨",
+            en: "Lower Limb",
+            fi: "Alaraaja"
+        },
+        bodyPart: "lower_limb",
         bones: [
             {
                 id: "femur",
@@ -532,11 +680,152 @@ const skeletalData = {
                 id: "phalanges_foot",
                 chinese: "趾骨",
                 latin: "Phalanges pedis",
-                finnish: "Varvaskuu",
+                finnish: "Varvasluut",
                 pronunciation: "fah-LAN-jeez PEH-dis",
                 features: ["近节趾骨 (Proximal phalanx)", "中节趾骨 (Middle phalanx)", "远节趾骨 (Distal phalanx)"],
                 description: "足趾的14根趾骨"
+            },
+            {
+                id: "sesamoid_foot",
+                chinese: "籽骨（足）",
+                latin: "Ossa sesamoidea pedis",
+                finnish: "Seesamiluut (jalka)",
+                pronunciation: "OS-ah seh-sah-MOY-day-ah PEH-dis",
+                features: ["第一跖骨籽骨 (First metatarsal sesamoids)"],
+                description: "足部的籽骨，常见于第一跖趾关节"
             }
         ]
+    },
+    
+    hand: {
+        category: {
+            zh: "手部骨骼",
+            en: "Hand Bones",
+            fi: "Käden Luut"
+        },
+        bodyPart: "upper_limb",
+        bones: [
+            {
+                id: "first_metacarpal",
+                chinese: "第一掌骨",
+                latin: "Os metacarpale primum",
+                finnish: "Ensimmäinen kämmenluu",
+                pronunciation: "os-met-ah-kar-PAH-lay PREE-mum",
+                features: ["基底 (Base)", "体 (Shaft)", "头 (Head)"],
+                description: "拇指的掌骨，最短最粗"
+            },
+            {
+                id: "proximal_phalanx_thumb",
+                chinese: "拇指近节指骨",
+                latin: "Phalanx proximalis pollicis",
+                finnish: "Peukalon tyvisolmu",
+                pronunciation: "FAY-lanks prok-sih-MAH-lis POL-ih-sis",
+                features: ["基底 (Base)", "体 (Shaft)", "头 (Head)"],
+                description: "拇指的近节指骨，拇指只有两节指骨"
+            },
+            {
+                id: "distal_phalanx_thumb",
+                chinese: "拇指远节指骨",
+                latin: "Phalanx distalis pollicis",
+                finnish: "Peukalon kärkiluu",
+                pronunciation: "FAY-lanks dis-TAH-lis POL-ih-sis",
+                features: ["基底 (Base)", "体 (Shaft)", "末端粗隆 (Terminal tuberosity)"],
+                description: "拇指的远节指骨"
+            }
+        ]
+    },
+    
+    foot: {
+        category: {
+            zh: "足部骨骼",
+            en: "Foot Bones",
+            fi: "Jalan Luut"
+        },
+        bodyPart: "lower_limb",
+        bones: [
+            {
+                id: "medial_cuneiform",
+                chinese: "内侧楔骨",
+                latin: "Os cuneiforme mediale",
+                finnish: "Sisempi kiilaluu",
+                pronunciation: "os-kyoo-nee-ih-FOR-may meh-dee-AH-lay",
+                features: ["最大的楔骨 (Largest cuneiform)", "关节面 (Articular surfaces)"],
+                description: "三块楔骨中最大的一块"
+            },
+            {
+                id: "intermediate_cuneiform",
+                chinese: "中间楔骨",
+                latin: "Os cuneiforme intermedium",
+                finnish: "Keskimmäinen kiilaluu",
+                pronunciation: "os-kyoo-nee-ih-FOR-may in-ter-MEE-dee-um",
+                features: ["最小的楔骨 (Smallest cuneiform)"],
+                description: "三块楔骨中最小的一块"
+            },
+            {
+                id: "lateral_cuneiform",
+                chinese: "外侧楔骨",
+                latin: "Os cuneiforme laterale",
+                finnish: "Ulompi kiilaluu",
+                pronunciation: "os-kyoo-nee-ih-FOR-may lah-teh-RAH-lay",
+                features: ["楔形 (Wedge-shaped)"],
+                description: "位于中间楔骨和骰骨之间"
+            },
+            {
+                id: "first_metatarsal",
+                chinese: "第一跖骨",
+                latin: "Os metatarsale primum",
+                finnish: "Ensimmäinen jalkapöydänluu",
+                pronunciation: "os-met-ah-tar-SAH-lay PREE-mum",
+                features: ["最短最粗 (Shortest and thickest)", "籽骨沟 (Sesamoid grooves)"],
+                description: "大脚趾的跖骨，最短最粗壮"
+            },
+            {
+                id: "proximal_phalanx_hallux",
+                chinese: "大脚趾近节趾骨",
+                latin: "Phalanx proximalis hallucis",
+                finnish: "Isovarpaan tyvisolmu",
+                pronunciation: "FAY-lanks prok-sih-MAH-lis hah-LOO-sis",
+                features: ["基底 (Base)", "体 (Shaft)", "头 (Head)"],
+                description: "大脚趾的近节趾骨"
+            },
+            {
+                id: "distal_phalanx_hallux",
+                chinese: "大脚趾远节趾骨",
+                latin: "Phalanx distalis hallucis",
+                finnish: "Isovarpaan kärkiluu",
+                pronunciation: "FAY-lanks dis-TAH-lis hah-LOO-sis",
+                features: ["基底 (Base)", "体 (Shaft)", "末端粗隆 (Terminal tuberosity)"],
+                description: "大脚趾的远节趾骨"
+            }
+        ]
+    }
+};
+
+// Body part definitions for filtering
+const bodyParts = {
+    all: {
+        zh: "所有部位",
+        en: "All Parts",
+        fi: "Kaikki Osat"
+    },
+    head: {
+        zh: "头部",
+        en: "Head",
+        fi: "Pää"
+    },
+    trunk: {
+        zh: "躯干",
+        en: "Trunk",
+        fi: "Vartalo"
+    },
+    upper_limb: {
+        zh: "上肢",
+        en: "Upper Limb",
+        fi: "Yläraaja"
+    },
+    lower_limb: {
+        zh: "下肢",
+        en: "Lower Limb",
+        fi: "Alaraaja"
     }
 };

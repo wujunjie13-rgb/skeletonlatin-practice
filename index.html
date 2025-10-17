@@ -9,29 +9,42 @@
 <body>
     <div class="container">
         <header>
-            <h1>骨架拉丁命名练习</h1>
-            <p class="subtitle">Skeleton Latin Naming Practice</p>
+            <div class="header-content">
+                <h1 data-i18n="title">骨架拉丁命名练习</h1>
+                <p class="subtitle" data-i18n="subtitle">Skeleton Latin Naming Practice</p>
+            </div>
+            <div class="language-switcher">
+                <button class="lang-btn active" data-lang="zh">中文</button>
+                <button class="lang-btn" data-lang="en">English</button>
+                <button class="lang-btn" data-lang="fi">Suomi</button>
+            </div>
         </header>
 
         <nav class="tabs">
-            <button class="tab-button active" data-tab="practice">练习模式</button>
-            <button class="tab-button" data-tab="browse">浏览骨骼</button>
-            <button class="tab-button" data-tab="mistakes">错题库</button>
-            <button class="tab-button" data-tab="stats">统计</button>
+            <button class="tab-button active" data-tab="practice" data-i18n="practiceMode">练习模式</button>
+            <button class="tab-button" data-tab="browse" data-i18n="browseBones">浏览骨骼</button>
+            <button class="tab-button" data-tab="mistakes" data-i18n="mistakeBank">错题库</button>
+            <button class="tab-button" data-tab="stats" data-i18n="statistics">统计</button>
         </nav>
 
         <!-- Practice Mode -->
         <div id="practice" class="tab-content active">
             <div class="settings">
                 <label>
+                    <span data-i18n="bodyPartFilter">身体部位筛选</span>:
+                    <select id="bodyPartFilter">
+                        <option value="all" data-i18n="allParts">所有部位</option>
+                    </select>
+                </label>
+                <label>
                     <input type="checkbox" id="showFinnish" checked>
-                    显示芬兰语 (Show Finnish)
+                    <span data-i18n="showFinnish">显示芬兰语</span>
                 </label>
                 <label>
                     <input type="checkbox" id="playPronunciation" checked>
-                    自动发音 (Auto pronunciation)
+                    <span data-i18n="autoPronunciation">自动发音</span>
                 </label>
-                <button id="resetProgress">重置进度 (Reset)</button>
+                <button id="resetProgress" data-i18n="resetProgress">重置进度</button>
             </div>
 
             <div class="quiz-container">
@@ -41,20 +54,20 @@
                         <h3 id="boneName"></h3>
                         <p id="boneDescription"></p>
                     </div>
-                    <button id="playAudio" class="audio-button">🔊 发音</button>
+                    <button id="playAudio" class="audio-button">🔊 <span data-i18n="pronunciation">发音</span></button>
                 </div>
 
                 <div class="answer-area">
-                    <input type="text" id="answerInput" placeholder="输入拉丁名称...">
-                    <button id="submitAnswer">提交</button>
-                    <button id="showAnswer">显示答案</button>
-                    <button id="nextQuestion">下一题</button>
+                    <input type="text" id="answerInput" data-i18n-placeholder="inputLatinName" placeholder="输入拉丁名称...">
+                    <button id="submitAnswer" data-i18n="submit">提交</button>
+                    <button id="showAnswer" data-i18n="showAnswer">显示答案</button>
+                    <button id="nextQuestion" data-i18n="nextQuestion">下一题</button>
                 </div>
 
                 <div class="feedback" id="feedback"></div>
 
                 <div class="progress">
-                    <p>进度: <span id="progressText">0/0</span></p>
+                    <p><span data-i18n="progress">进度</span>: <span id="progressText">0/0</span></p>
                     <div class="progress-bar">
                         <div id="progressFill" class="progress-fill"></div>
                     </div>
@@ -66,9 +79,9 @@
         <div id="browse" class="tab-content">
             <div class="filter-area">
                 <select id="categoryFilter">
-                    <option value="all">所有分类 (All Categories)</option>
+                    <option value="all" data-i18n="allCategories">所有分类</option>
                 </select>
-                <input type="text" id="searchInput" placeholder="搜索骨骼名称...">
+                <input type="text" id="searchInput" data-i18n-placeholder="searchBones" placeholder="搜索骨骼名称...">
             </div>
 
             <div id="boneList" class="bone-list"></div>
@@ -76,32 +89,32 @@
 
         <!-- Mistakes Bank -->
         <div id="mistakes" class="tab-content">
-            <h2>错题库 (Mistake Bank)</h2>
+            <h2 data-i18n="mistakeBank">错题库</h2>
             <div class="mistakes-controls">
-                <button id="practiceMistakes">练习错题</button>
-                <button id="clearMistakes">清空错题库</button>
+                <button id="practiceMistakes" data-i18n="practiceMistakes">练习错题</button>
+                <button id="clearMistakes" data-i18n="clearMistakes">清空错题库</button>
             </div>
             <div id="mistakesList" class="mistakes-list"></div>
         </div>
 
         <!-- Statistics -->
         <div id="stats" class="tab-content">
-            <h2>学习统计 (Statistics)</h2>
+            <h2 data-i18n="learningStatistics">学习统计</h2>
             <div class="stats-container">
                 <div class="stat-card">
-                    <h3>总题数</h3>
+                    <h3 data-i18n="totalQuestions">总题数</h3>
                     <p id="totalQuestions">0</p>
                 </div>
                 <div class="stat-card">
-                    <h3>正确率</h3>
+                    <h3 data-i18n="accuracy">正确率</h3>
                     <p id="accuracy">0%</p>
                 </div>
                 <div class="stat-card">
-                    <h3>错题数</h3>
+                    <h3 data-i18n="mistakeCount">错题数</h3>
                     <p id="mistakeCount">0</p>
                 </div>
                 <div class="stat-card">
-                    <h3>已掌握</h3>
+                    <h3 data-i18n="mastered">已掌握</h3>
                     <p id="masteredCount">0</p>
                 </div>
             </div>
