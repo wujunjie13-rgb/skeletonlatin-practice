@@ -1,7 +1,112 @@
+// Translations for UI elements
+const translations = {
+    zh: {
+        title: "骨架拉丁命名练习",
+        subtitle: "Skeleton Latin Naming Practice",
+        practiceMode: "练习模式",
+        browseBones: "浏览骨骼",
+        mistakeBank: "错题库",
+        statistics: "统计",
+        showFinnish: "显示芬兰语",
+        autoPronunciation: "自动发音",
+        resetProgress: "重置进度",
+        bodyPartFilter: "身体部位筛选",
+        allParts: "所有部位",
+        inputLatinName: "输入拉丁名称...",
+        submit: "提交",
+        showAnswer: "显示答案",
+        nextQuestion: "下一题",
+        pronunciation: "发音",
+        progress: "进度",
+        allCategories: "所有分类",
+        searchBones: "搜索骨骼名称...",
+        practiceMistakes: "练习错题",
+        clearMistakes: "清空错题库",
+        learningStatistics: "学习统计",
+        totalQuestions: "总题数",
+        accuracy: "正确率",
+        mistakeCount: "错题数",
+        mastered: "已掌握",
+        category: "分类",
+        latinName: "拉丁名",
+        finnishName: "芬兰语",
+        features: "主要特征"
+    },
+    en: {
+        title: "Skeleton Latin Practice",
+        subtitle: "Learn Anatomical Latin Names",
+        practiceMode: "Practice",
+        browseBones: "Browse",
+        mistakeBank: "Mistakes",
+        statistics: "Statistics",
+        showFinnish: "Show Finnish",
+        autoPronunciation: "Auto Pronunciation",
+        resetProgress: "Reset Progress",
+        bodyPartFilter: "Body Part Filter",
+        allParts: "All Parts",
+        inputLatinName: "Enter Latin name...",
+        submit: "Submit",
+        showAnswer: "Show Answer",
+        nextQuestion: "Next",
+        pronunciation: "Pronunciation",
+        progress: "Progress",
+        allCategories: "All Categories",
+        searchBones: "Search bones...",
+        practiceMistakes: "Practice Mistakes",
+        clearMistakes: "Clear Mistakes",
+        learningStatistics: "Learning Statistics",
+        totalQuestions: "Total Questions",
+        accuracy: "Accuracy",
+        mistakeCount: "Mistakes",
+        mastered: "Mastered",
+        category: "Category",
+        latinName: "Latin Name",
+        finnishName: "Finnish",
+        features: "Main Features"
+    },
+    fi: {
+        title: "Luurangon Latinalainen Harjoitus",
+        subtitle: "Opettele Anatomiset Latinalaiset Nimet",
+        practiceMode: "Harjoitus",
+        browseBones: "Selaa",
+        mistakeBank: "Virheet",
+        statistics: "Tilastot",
+        showFinnish: "Näytä suomeksi",
+        autoPronunciation: "Automaattinen Ääntäminen",
+        resetProgress: "Nollaa Edistyminen",
+        bodyPartFilter: "Kehon Osa Suodatin",
+        allParts: "Kaikki Osat",
+        inputLatinName: "Syötä latinalainen nimi...",
+        submit: "Lähetä",
+        showAnswer: "Näytä Vastaus",
+        nextQuestion: "Seuraava",
+        pronunciation: "Ääntäminen",
+        progress: "Edistyminen",
+        allCategories: "Kaikki Kategoriat",
+        searchBones: "Etsi luita...",
+        practiceMistakes: "Harjoittele Virheitä",
+        clearMistakes: "Tyhjennä Virheet",
+        learningStatistics: "Oppimistilastot",
+        totalQuestions: "Kysymyksiä Yhteensä",
+        accuracy: "Tarkkuus",
+        mistakeCount: "Virheet",
+        mastered: "Hallittu",
+        category: "Kategoria",
+        latinName: "Latinalainen Nimi",
+        finnishName: "Suomalainen",
+        features: "Pääpiirteet"
+    }
+};
+
 // Comprehensive skeletal anatomy data with Latin names, Finnish names, and anatomical features
 const skeletalData = {
     skull: {
-        category: "颅骨 (Skull)",
+        category: {
+            zh: "颅骨",
+            en: "Skull",
+            fi: "Kallo"
+        },
+        bodyPart: "head",
         bones: [
             {
                 id: "frontal",
@@ -133,7 +238,12 @@ const skeletalData = {
     },
     
     vertebral_column: {
-        category: "脊柱 (Vertebral Column)",
+        category: {
+            zh: "脊柱",
+            en: "Vertebral Column",
+            fi: "Selkäranka"
+        },
+        bodyPart: "trunk",
         bones: [
             {
                 id: "cervical_vertebrae",
@@ -202,7 +312,12 @@ const skeletalData = {
     },
 
     thorax: {
-        category: "胸廓 (Thorax)",
+        category: {
+            zh: "胸廓",
+            en: "Thorax",
+            fi: "Rintakehä"
+        },
+        bodyPart: "trunk",
         bones: [
             {
                 id: "sternum",
@@ -253,7 +368,12 @@ const skeletalData = {
     },
 
     upper_limb: {
-        category: "上肢骨 (Upper Limb)",
+        category: {
+            zh: "上肢骨",
+            en: "Upper Limb",
+            fi: "Yläraaja"
+        },
+        bodyPart: "upper_limb",
         bones: [
             {
                 id: "clavicle",
@@ -394,7 +514,12 @@ const skeletalData = {
     },
 
     pelvic_girdle: {
-        category: "骨盆带 (Pelvic Girdle)",
+        category: {
+            zh: "骨盆带",
+            en: "Pelvic Girdle",
+            fi: "Lantion Vyöhyke"
+        },
+        bodyPart: "trunk",
         bones: [
             {
                 id: "hip_bone",
@@ -436,7 +561,12 @@ const skeletalData = {
     },
 
     lower_limb: {
-        category: "下肢骨 (Lower Limb)",
+        category: {
+            zh: "下肢骨",
+            en: "Lower Limb",
+            fi: "Alaraaja"
+        },
+        bodyPart: "lower_limb",
         bones: [
             {
                 id: "femur",
@@ -538,5 +668,34 @@ const skeletalData = {
                 description: "足趾的14根趾骨"
             }
         ]
+    }
+};
+
+// Body part definitions for filtering
+const bodyParts = {
+    all: {
+        zh: "所有部位",
+        en: "All Parts",
+        fi: "Kaikki Osat"
+    },
+    head: {
+        zh: "头部",
+        en: "Head",
+        fi: "Pää"
+    },
+    trunk: {
+        zh: "躯干",
+        en: "Trunk",
+        fi: "Vartalo"
+    },
+    upper_limb: {
+        zh: "上肢",
+        en: "Upper Limb",
+        fi: "Yläraaja"
+    },
+    lower_limb: {
+        zh: "下肢",
+        en: "Lower Limb",
+        fi: "Alaraaja"
     }
 };

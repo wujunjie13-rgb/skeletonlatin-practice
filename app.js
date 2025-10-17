@@ -1,12 +1,14 @@
 // Application logic for skeleton Latin practice
 class SkeletonPractice {
     constructor() {
+        this.currentLanguage = localStorage.getItem('language') || 'zh';
         this.allBones = this.flattenBones();
         this.currentBone = null;
         this.currentIndex = 0;
         this.stats = this.loadStats();
         this.mistakes = this.loadMistakes();
         this.practiceMode = 'all'; // 'all' or 'mistakes'
+        this.currentBodyPart = 'all'; // Body part filter
         
         this.initializeApp();
     }
@@ -17,11 +19,68 @@ class SkeletonPractice {
             skeletalData[category].bones.forEach(bone => {
                 bones.push({
                     ...bone,
-                    category: skeletalData[category].category
+                    category: skeletalData[category].category,
+                    bodyPart: skeletalData[category].bodyPart
                 });
             });
         }
         return bones;
+    }
+
+    translate(key) {
+        return translations[this.currentLanguage][key] || key;
+    }
+
+    updateLanguage() {
+        // Update all elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            if (translations[this.currentLanguage] && translations[this.currentLanguage][key]) {
+                element.textContent = translations[this.currentLanguage][key];
+            }
+        });
+
+        // Update placeholders
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-i18n-placeholder');
+            if (translations[this.currentLanguage] && translations[this.currentLanguage][key]) {
+                element.placeholder = translations[this.currentLanguage][key];
+            }
+        });
+
+        // Update language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === this.currentLanguage);
+        });
+
+        // Refresh current view
+        this.displayQuestion();
+        this.renderBoneList();
+        this.renderMistakes();
+        this.renderStats();
+        this.updateBodyPartFilter();
+    }
+
+    updateBodyPartFilter() {
+        const filter = document.getElementById('bodyPartFilter');
+        filter.innerHTML = '';
+        
+        for (const partKey in bodyParts) {
+            const option = document.createElement('option');
+            option.value = partKey;
+            option.textContent = bodyParts[partKey][this.currentLanguage];
+            if (partKey === this.currentBodyPart) {
+                option.selected = true;
+            }
+            filter.appendChild(option);
+        }
+    }
+
+    getCategoryText(category) {
+        if (typeof category === 'object') {
+            return category[this.currentLanguage] || category.zh;
+        }
+        return category;
     }
 
     loadStats() {
@@ -75,7 +134,12 @@ class SkeletonPractice {
     }
 
     clearMistakes() {
-        if (confirm('确定要清空错题库吗？')) {
+        const confirmMsg = {
+            zh: '确定要清空错题库吗？',
+            en: 'Are you sure you want to clear all mistakes?',
+            fi: 'Haluatko varmasti tyhjentää kaikki virheet?'
+        };
+        if (confirm(confirmMsg[this.currentLanguage])) {
             this.mistakes = [];
             this.saveMistakes();
             this.renderMistakes();
@@ -83,12 +147,24 @@ class SkeletonPractice {
     }
 
     initializeApp() {
+        this.setupLanguageSwitcher();
         this.setupTabs();
         this.setupPracticeMode();
         this.setupBrowseMode();
         this.setupMistakesMode();
+        this.updateLanguage();
         this.renderStats();
         this.nextQuestion();
+    }
+
+    setupLanguageSwitcher() {
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.currentLanguage = btn.dataset.lang;
+                localStorage.setItem('language', this.currentLanguage);
+                this.updateLanguage();
+            });
+        });
     }
 
     setupTabs() {
@@ -128,28 +204,56 @@ class SkeletonPractice {
                 this.checkAnswer();
             }
         });
+
+        // Body part filter
+        document.getElementById('bodyPartFilter').addEventListener('change', (e) => {
+            this.currentBodyPart = e.target.value;
+            this.currentIndex = 0;
+            this.nextQuestion();
+        });
     }
 
     setupBrowseMode() {
         const categoryFilter = document.getElementById('categoryFilter');
         
-        // Populate category filter
-        const categories = [...new Set(this.allBones.map(b => b.category))];
-        categories.forEach(cat => {
-            const option = document.createElement('option');
-            option.value = cat;
-            option.textContent = cat;
-            categoryFilter.appendChild(option);
-        });
+        // Populate category filter - will be updated when language changes
+        this.updateCategoryFilter();
 
         categoryFilter.addEventListener('change', () => this.renderBoneList());
         document.getElementById('searchInput').addEventListener('input', () => this.renderBoneList());
     }
 
+    updateCategoryFilter() {
+        const categoryFilter = document.getElementById('categoryFilter');
+        const currentValue = categoryFilter.value;
+        categoryFilter.innerHTML = '';
+        
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = this.translate('allCategories');
+        categoryFilter.appendChild(allOption);
+        
+        const categories = [...new Set(Object.values(skeletalData).map(s => s.category))];
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            const catText = this.getCategoryText(cat);
+            option.value = catText;
+            option.textContent = catText;
+            categoryFilter.appendChild(option);
+        });
+        
+        categoryFilter.value = currentValue || 'all';
+    }
+
     setupMistakesMode() {
         document.getElementById('practiceMistakes').addEventListener('click', () => {
             if (this.mistakes.length === 0) {
-                alert('错题库为空！');
+                const emptyMsg = {
+                    zh: '错题库为空！',
+                    en: 'Mistake bank is empty!',
+                    fi: 'Virhepankki on tyhjä!'
+                };
+                alert(emptyMsg[this.currentLanguage]);
                 return;
             }
             this.practiceMode = 'mistakes';
@@ -162,16 +266,26 @@ class SkeletonPractice {
     }
 
     nextQuestion() {
-        const bones = this.practiceMode === 'mistakes' ? this.mistakes : this.allBones;
+        let bones = this.practiceMode === 'mistakes' ? this.mistakes : this.allBones;
+        
+        // Filter by body part
+        if (this.currentBodyPart !== 'all') {
+            bones = bones.filter(b => b.bodyPart === this.currentBodyPart);
+        }
         
         if (bones.length === 0) {
-            document.getElementById('feedback').innerHTML = '<p class="info">没有可练习的内容</p>';
+            const noContentMsg = {
+                zh: '没有可练习的内容',
+                en: 'No content available for practice',
+                fi: 'Ei harjoiteltavaa sisältöä'
+            };
+            document.getElementById('feedback').innerHTML = `<p class="info">${noContentMsg[this.currentLanguage]}</p>`;
             return;
         }
 
         this.currentBone = bones[this.currentIndex % bones.length];
         this.displayQuestion();
-        this.updateProgress();
+        this.updateProgress(bones.length);
         
         document.getElementById('answerInput').value = '';
         document.getElementById('feedback').innerHTML = '';
@@ -183,18 +297,20 @@ class SkeletonPractice {
     }
 
     displayQuestion() {
+        if (!this.currentBone) return;
+        
         const showFinnish = document.getElementById('showFinnish').checked;
         
-        document.getElementById('boneCategory').textContent = this.currentBone.category;
+        document.getElementById('boneCategory').textContent = this.getCategoryText(this.currentBone.category);
         document.getElementById('boneName').textContent = this.currentBone.chinese;
         
         let description = this.currentBone.description;
-        if (showFinnish) {
-            description += `<br><strong>芬兰语:</strong> ${this.currentBone.finnish}`;
+        if (showFinnish && this.currentBone.finnish) {
+            description += `<br><strong>${this.translate('finnishName')}:</strong> ${this.currentBone.finnish}`;
         }
         
         if (this.currentBone.features && this.currentBone.features.length > 0) {
-            description += '<br><strong>主要特征:</strong><br>';
+            description += `<br><strong>${this.translate('features')}:</strong><br>`;
             description += '<ul>';
             this.currentBone.features.forEach(feature => {
                 description += `<li>${feature}</li>`;
@@ -210,7 +326,12 @@ class SkeletonPractice {
         const correctAnswer = this.currentBone.latin;
         
         if (!userAnswer) {
-            document.getElementById('feedback').innerHTML = '<p class="warning">请输入答案</p>';
+            const messages = {
+                zh: '请输入答案',
+                en: 'Please enter an answer',
+                fi: 'Syötä vastaus'
+            };
+            document.getElementById('feedback').innerHTML = `<p class="warning">${messages[this.currentLanguage]}</p>`;
             return;
         }
 
@@ -230,18 +351,41 @@ class SkeletonPractice {
                 this.removeMistake(this.currentBone.id);
             }
             
+            const correctMsg = {
+                zh: '✓ 正确！',
+                en: '✓ Correct!',
+                fi: '✓ Oikein!'
+            };
+            
             document.getElementById('feedback').innerHTML = `
-                <p class="correct">✓ 正确！</p>
-                <p>拉丁名: <strong>${correctAnswer}</strong></p>
-                <p>发音: ${this.currentBone.pronunciation}</p>
+                <p class="correct">${correctMsg[this.currentLanguage]}</p>
+                <p><strong>${this.translate('latinName')}:</strong> ${correctAnswer}</p>
+                <p><strong>${this.translate('pronunciation')}:</strong> ${this.currentBone.pronunciation}</p>
             `;
         } else {
             this.addMistake(this.currentBone);
+            
+            const incorrectMsg = {
+                zh: '✗ 错误',
+                en: '✗ Incorrect',
+                fi: '✗ Väärin'
+            };
+            const yourAnswerMsg = {
+                zh: '您的答案',
+                en: 'Your answer',
+                fi: 'Vastauksesi'
+            };
+            const correctAnswerMsg = {
+                zh: '正确答案',
+                en: 'Correct answer',
+                fi: 'Oikea vastaus'
+            };
+            
             document.getElementById('feedback').innerHTML = `
-                <p class="incorrect">✗ 错误</p>
-                <p>您的答案: <strong>${userAnswer}</strong></p>
-                <p>正确答案: <strong>${correctAnswer}</strong></p>
-                <p>发音: ${this.currentBone.pronunciation}</p>
+                <p class="incorrect">${incorrectMsg[this.currentLanguage]}</p>
+                <p><strong>${yourAnswerMsg[this.currentLanguage]}:</strong> ${userAnswer}</p>
+                <p><strong>${correctAnswerMsg[this.currentLanguage]}:</strong> ${correctAnswer}</p>
+                <p><strong>${this.translate('pronunciation')}:</strong> ${this.currentBone.pronunciation}</p>
             `;
         }
         
@@ -262,9 +406,14 @@ class SkeletonPractice {
     }
 
     showAnswer() {
+        const answerMsg = {
+            zh: '答案',
+            en: 'Answer',
+            fi: 'Vastaus'
+        };
         document.getElementById('feedback').innerHTML = `
-            <p class="info">答案: <strong>${this.currentBone.latin}</strong></p>
-            <p>发音: ${this.currentBone.pronunciation}</p>
+            <p class="info"><strong>${answerMsg[this.currentLanguage]}:</strong> ${this.currentBone.latin}</p>
+            <p><strong>${this.translate('pronunciation')}:</strong> ${this.currentBone.pronunciation}</p>
         `;
         this.addMistake(this.currentBone);
     }
@@ -278,19 +427,30 @@ class SkeletonPractice {
         window.speechSynthesis.speak(utterance);
     }
 
-    updateProgress() {
-        const bones = this.practiceMode === 'mistakes' ? this.mistakes : this.allBones;
-        const current = (this.currentIndex % bones.length) + 1;
-        const total = bones.length;
+    updateProgress(totalBones) {
+        let bones = this.practiceMode === 'mistakes' ? this.mistakes : this.allBones;
+        
+        // Filter by body part
+        if (this.currentBodyPart !== 'all') {
+            bones = bones.filter(b => b.bodyPart === this.currentBodyPart);
+        }
+        
+        const total = totalBones || bones.length;
+        const current = total > 0 ? (this.currentIndex % total) + 1 : 0;
         
         document.getElementById('progressText').textContent = `${current}/${total}`;
         
-        const percentage = (current / total) * 100;
+        const percentage = total > 0 ? (current / total) * 100 : 0;
         document.getElementById('progressFill').style.width = `${percentage}%`;
     }
 
     resetProgress() {
-        if (confirm('确定要重置所有进度吗？这将清除统计数据和错题库。')) {
+        const confirmMsg = {
+            zh: '确定要重置所有进度吗？这将清除统计数据和错题库。',
+            en: 'Are you sure you want to reset all progress? This will clear statistics and mistakes.',
+            fi: 'Haluatko varmasti nollata kaiken edistyksen? Tämä tyhjentää tilastot ja virheet.'
+        };
+        if (confirm(confirmMsg[this.currentLanguage])) {
             localStorage.removeItem('skeletonStats');
             localStorage.removeItem('skeletonMistakes');
             this.stats = this.loadStats();
@@ -309,14 +469,14 @@ class SkeletonPractice {
         let bones = this.allBones;
         
         if (categoryFilter !== 'all') {
-            bones = bones.filter(b => b.category === categoryFilter);
+            bones = bones.filter(b => this.getCategoryText(b.category) === categoryFilter);
         }
         
         if (searchTerm) {
             bones = bones.filter(b => 
                 b.chinese.toLowerCase().includes(searchTerm) ||
                 b.latin.toLowerCase().includes(searchTerm) ||
-                b.finnish.toLowerCase().includes(searchTerm)
+                (b.finnish && b.finnish.toLowerCase().includes(searchTerm))
             );
         }
         
@@ -338,10 +498,10 @@ class SkeletonPractice {
             
             card.innerHTML = `
                 <h3>${bone.chinese}</h3>
-                <p><strong>拉丁名:</strong> ${bone.latin}</p>
-                <p><strong>芬兰语:</strong> ${bone.finnish}</p>
-                <p><strong>发音:</strong> ${bone.pronunciation}</p>
-                <p><strong>分类:</strong> ${bone.category}</p>
+                <p><strong>${this.translate('latinName')}:</strong> ${bone.latin}</p>
+                <p><strong>${this.translate('finnishName')}:</strong> ${bone.finnish}</p>
+                <p><strong>${this.translate('pronunciation')}:</strong> ${bone.pronunciation}</p>
+                <p><strong>${this.translate('category')}:</strong> ${this.getCategoryText(bone.category)}</p>
                 <p>${bone.description}</p>
                 ${featuresHtml}
             `;
@@ -350,7 +510,12 @@ class SkeletonPractice {
         });
         
         if (bones.length === 0) {
-            boneList.innerHTML = '<p class="info">未找到匹配的骨骼</p>';
+            const noMatchMsg = {
+                zh: '未找到匹配的骨骼',
+                en: 'No matching bones found',
+                fi: 'Ei vastaavia luita löytynyt'
+            };
+            boneList.innerHTML = `<p class="info">${noMatchMsg[this.currentLanguage]}</p>`;
         }
     }
 
@@ -359,27 +524,48 @@ class SkeletonPractice {
         mistakesList.innerHTML = '';
         
         if (this.mistakes.length === 0) {
-            mistakesList.innerHTML = '<p class="info">错题库为空，继续加油！</p>';
+            const emptyMsg = {
+                zh: '错题库为空，继续加油！',
+                en: 'Mistake bank is empty, keep it up!',
+                fi: 'Virhepankki on tyhjä, jatka samaan malliin!'
+            };
+            mistakesList.innerHTML = `<p class="info">${emptyMsg[this.currentLanguage]}</p>`;
             return;
         }
         
         // Sort by most recent
         const sorted = [...this.mistakes].sort((a, b) => b.timestamp - a.timestamp);
         
+        const mistakeCountLabel = {
+            zh: '错误次数',
+            en: 'Mistake count',
+            fi: 'Virheiden määrä'
+        };
+        const lastMistakeLabel = {
+            zh: '最后错误时间',
+            en: 'Last mistake',
+            fi: 'Viimeisin virhe'
+        };
+        const removeLabel = {
+            zh: '移除',
+            en: 'Remove',
+            fi: 'Poista'
+        };
+        
         sorted.forEach(bone => {
             const card = document.createElement('div');
             card.className = 'mistake-card';
             
-            const date = new Date(bone.timestamp).toLocaleString('zh-CN');
+            const date = new Date(bone.timestamp).toLocaleString(this.currentLanguage === 'fi' ? 'fi-FI' : this.currentLanguage === 'en' ? 'en-US' : 'zh-CN');
             
             card.innerHTML = `
                 <h3>${bone.chinese}</h3>
-                <p><strong>拉丁名:</strong> ${bone.latin}</p>
-                <p><strong>芬兰语:</strong> ${bone.finnish}</p>
-                <p><strong>发音:</strong> ${bone.pronunciation}</p>
-                <p><strong>错误次数:</strong> ${bone.attempts || 1}</p>
-                <p><strong>最后错误时间:</strong> ${date}</p>
-                <button class="remove-mistake" data-id="${bone.id}">移除</button>
+                <p><strong>${this.translate('latinName')}:</strong> ${bone.latin}</p>
+                <p><strong>${this.translate('finnishName')}:</strong> ${bone.finnish}</p>
+                <p><strong>${this.translate('pronunciation')}:</strong> ${bone.pronunciation}</p>
+                <p><strong>${mistakeCountLabel[this.currentLanguage]}:</strong> ${bone.attempts || 1}</p>
+                <p><strong>${lastMistakeLabel[this.currentLanguage]}:</strong> ${date}</p>
+                <button class="remove-mistake" data-id="${bone.id}">${removeLabel[this.currentLanguage]}</button>
             `;
             
             card.querySelector('.remove-mistake').addEventListener('click', () => {
