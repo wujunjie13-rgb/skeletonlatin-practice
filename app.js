@@ -302,7 +302,11 @@ class SkeletonPractice {
         const showFinnish = document.getElementById('showFinnish').checked;
         
         document.getElementById('boneCategory').textContent = this.getCategoryText(this.currentBone.category);
-        document.getElementById('boneName').textContent = this.currentBone.chinese;
+        
+        // Create bone image placeholder
+        const bonePlaceholder = `<div class="bone-image-placeholder">🦴</div>`;
+        
+        document.getElementById('boneName').innerHTML = bonePlaceholder + this.currentBone.chinese;
         
         let description = this.currentBone.description;
         if (showFinnish && this.currentBone.finnish) {

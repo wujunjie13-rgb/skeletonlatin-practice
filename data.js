@@ -233,6 +233,15 @@ const skeletalData = {
                 pronunciation: "KON-kah nah-SAH-lis in-FEE-ree-or",
                 features: ["鼻道 (Nasal meatus)"],
                 description: "鼻腔外侧壁的薄骨片"
+            },
+            {
+                id: "hyoid",
+                chinese: "舌骨",
+                latin: "Os hyoideum",
+                finnish: "Kieliluu",
+                pronunciation: "os-hy-OY-day-um",
+                features: ["大角 (Greater horn)", "小角 (Lesser horn)", "体 (Body)"],
+                description: "U形骨，位于颈部，不与其他骨骼直接连接"
             }
         ]
     },
@@ -509,6 +518,15 @@ const skeletalData = {
                 pronunciation: "fah-LAN-jeez MAH-nus",
                 features: ["近节指骨 (Proximal phalanx)", "中节指骨 (Middle phalanx)", "远节指骨 (Distal phalanx)"],
                 description: "手指的14根指骨"
+            },
+            {
+                id: "sesamoid_hand",
+                chinese: "籽骨（手）",
+                latin: "Ossa sesamoidea manus",
+                finnish: "Seesamiluut (käsi)",
+                pronunciation: "OS-ah seh-sah-MOY-day-ah MAH-nus",
+                features: ["拇指籽骨 (Thumb sesamoids)"],
+                description: "手部的小型籽骨，常见于拇指掌指关节"
             }
         ]
     },
@@ -662,10 +680,122 @@ const skeletalData = {
                 id: "phalanges_foot",
                 chinese: "趾骨",
                 latin: "Phalanges pedis",
-                finnish: "Varvaskuu",
+                finnish: "Varvasluut",
                 pronunciation: "fah-LAN-jeez PEH-dis",
                 features: ["近节趾骨 (Proximal phalanx)", "中节趾骨 (Middle phalanx)", "远节趾骨 (Distal phalanx)"],
                 description: "足趾的14根趾骨"
+            },
+            {
+                id: "sesamoid_foot",
+                chinese: "籽骨（足）",
+                latin: "Ossa sesamoidea pedis",
+                finnish: "Seesamiluut (jalka)",
+                pronunciation: "OS-ah seh-sah-MOY-day-ah PEH-dis",
+                features: ["第一跖骨籽骨 (First metatarsal sesamoids)"],
+                description: "足部的籽骨，常见于第一跖趾关节"
+            }
+        ]
+    },
+    
+    hand: {
+        category: {
+            zh: "手部骨骼",
+            en: "Hand Bones",
+            fi: "Käden Luut"
+        },
+        bodyPart: "upper_limb",
+        bones: [
+            {
+                id: "first_metacarpal",
+                chinese: "第一掌骨",
+                latin: "Os metacarpale primum",
+                finnish: "Ensimmäinen kämmenluu",
+                pronunciation: "os-met-ah-kar-PAH-lay PREE-mum",
+                features: ["基底 (Base)", "体 (Shaft)", "头 (Head)"],
+                description: "拇指的掌骨，最短最粗"
+            },
+            {
+                id: "proximal_phalanx_thumb",
+                chinese: "拇指近节指骨",
+                latin: "Phalanx proximalis pollicis",
+                finnish: "Peukalon tyvisolmu",
+                pronunciation: "FAY-lanks prok-sih-MAH-lis POL-ih-sis",
+                features: ["基底 (Base)", "体 (Shaft)", "头 (Head)"],
+                description: "拇指的近节指骨，拇指只有两节指骨"
+            },
+            {
+                id: "distal_phalanx_thumb",
+                chinese: "拇指远节指骨",
+                latin: "Phalanx distalis pollicis",
+                finnish: "Peukalon kärkiluu",
+                pronunciation: "FAY-lanks dis-TAH-lis POL-ih-sis",
+                features: ["基底 (Base)", "体 (Shaft)", "末端粗隆 (Terminal tuberosity)"],
+                description: "拇指的远节指骨"
+            }
+        ]
+    },
+    
+    foot: {
+        category: {
+            zh: "足部骨骼",
+            en: "Foot Bones",
+            fi: "Jalan Luut"
+        },
+        bodyPart: "lower_limb",
+        bones: [
+            {
+                id: "medial_cuneiform",
+                chinese: "内侧楔骨",
+                latin: "Os cuneiforme mediale",
+                finnish: "Sisempi kiilaluu",
+                pronunciation: "os-kyoo-nee-ih-FOR-may meh-dee-AH-lay",
+                features: ["最大的楔骨 (Largest cuneiform)", "关节面 (Articular surfaces)"],
+                description: "三块楔骨中最大的一块"
+            },
+            {
+                id: "intermediate_cuneiform",
+                chinese: "中间楔骨",
+                latin: "Os cuneiforme intermedium",
+                finnish: "Keskimmäinen kiilaluu",
+                pronunciation: "os-kyoo-nee-ih-FOR-may in-ter-MEE-dee-um",
+                features: ["最小的楔骨 (Smallest cuneiform)"],
+                description: "三块楔骨中最小的一块"
+            },
+            {
+                id: "lateral_cuneiform",
+                chinese: "外侧楔骨",
+                latin: "Os cuneiforme laterale",
+                finnish: "Ulompi kiilaluu",
+                pronunciation: "os-kyoo-nee-ih-FOR-may lah-teh-RAH-lay",
+                features: ["楔形 (Wedge-shaped)"],
+                description: "位于中间楔骨和骰骨之间"
+            },
+            {
+                id: "first_metatarsal",
+                chinese: "第一跖骨",
+                latin: "Os metatarsale primum",
+                finnish: "Ensimmäinen jalkapöydänluu",
+                pronunciation: "os-met-ah-tar-SAH-lay PREE-mum",
+                features: ["最短最粗 (Shortest and thickest)", "籽骨沟 (Sesamoid grooves)"],
+                description: "大脚趾的跖骨，最短最粗壮"
+            },
+            {
+                id: "proximal_phalanx_hallux",
+                chinese: "大脚趾近节趾骨",
+                latin: "Phalanx proximalis hallucis",
+                finnish: "Isovarpaan tyvisolmu",
+                pronunciation: "FAY-lanks prok-sih-MAH-lis hah-LOO-sis",
+                features: ["基底 (Base)", "体 (Shaft)", "头 (Head)"],
+                description: "大脚趾的近节趾骨"
+            },
+            {
+                id: "distal_phalanx_hallux",
+                chinese: "大脚趾远节趾骨",
+                latin: "Phalanx distalis hallucis",
+                finnish: "Isovarpaan kärkiluu",
+                pronunciation: "FAY-lanks dis-TAH-lis hah-LOO-sis",
+                features: ["基底 (Base)", "体 (Shaft)", "末端粗隆 (Terminal tuberosity)"],
+                description: "大脚趾的远节趾骨"
             }
         ]
     }
