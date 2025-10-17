@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>骨骼拉丁文练习 - Skeleton Latin Practice</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>骨骼解剖学拉丁文练习</h1>
+        <h2>Skeleton Anatomy Latin Practice</h2>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="info-panel">
+                <h3>说明 / Instructions</h3>
+                <p>点击骨骼图中的不同部分来学习拉丁文名称。</p>
+                <p>Click on different parts of the skeleton to learn their Latin names.</p>
+                <div class="stats">
+                    <p>已学习 / Learned: <span id="learned-count">0</span></p>
+                    <p>总数 / Total: <span id="total-count">0</span></p>
+                </div>
+                <button id="quiz-btn" class="btn">开始测验 / Start Quiz</button>
+                <button id="reset-btn" class="btn">重置 / Reset</button>
+            </div>
+
+            <div class="skeleton-panel">
+                <svg id="skeleton-svg" viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Skull / Cranium -->
+                    <g id="bone-cranium" class="bone-part" data-name="Cranium" data-chinese="颅骨">
+                        <circle cx="200" cy="50" r="35" fill="#f0e6d2" stroke="#8b7355" stroke-width="2"/>
+                        <text x="200" y="55" text-anchor="middle" font-size="12">头颅</text>
+                    </g>
+
+                    <!-- Cervical Vertebrae / Vertebrae Cervicales -->
+                    <g id="bone-cervical" class="bone-part" data-name="Vertebrae Cervicales" data-chinese="颈椎">
+                        <rect x="190" y="85" width="20" height="30" rx="3" fill="#f0e6d2" stroke="#8b7355" stroke-width="2"/>
+                        <text x="200" y="103" text-anchor="middle" font-size="10">颈椎</text>
+                    </g>
+
+                    <!-- Clavicle / Clavicula -->
+                    <g id="bone-clavicle-left" class="bone-part" data-name="Clavicula (Left)" data-chinese="左锁骨">
+                        <line x1="200" y1="120" x2="150" y2="125" stroke="#f0e6d2" stroke-width="8" stroke-linecap="round"/>
+                        <text x="170" y="120" text-anchor="middle" font-size="10">锁骨</text>
+                    </g>
+                    <g id="bone-clavicle-right" class="bone-part" data-name="Clavicula (Right)" data-chinese="右锁骨">
+                        <line x1="200" y1="120" x2="250" y2="125" stroke="#f0e6d2" stroke-width="8" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Sternum -->
+                    <g id="bone-sternum" class="bone-part" data-name="Sternum" data-chinese="胸骨">
+                        <rect x="190" y="120" width="20" height="80" rx="3" fill="#f0e6d2" stroke="#8b7355" stroke-width="2"/>
+                        <text x="200" y="165" text-anchor="middle" font-size="10">胸骨</text>
+                    </g>
+
+                    <!-- Ribs / Costae -->
+                    <g id="bone-ribs-left" class="bone-part" data-name="Costae (Left)" data-chinese="左肋骨">
+                        <ellipse cx="165" cy="160" rx="35" ry="50" fill="none" stroke="#f0e6d2" stroke-width="6"/>
+                        <text x="135" y="165" text-anchor="middle" font-size="10">肋骨</text>
+                    </g>
+                    <g id="bone-ribs-right" class="bone-part" data-name="Costae (Right)" data-chinese="右肋骨">
+                        <ellipse cx="235" cy="160" rx="35" ry="50" fill="none" stroke="#f0e6d2" stroke-width="6"/>
+                    </g>
+
+                    <!-- Scapula -->
+                    <g id="bone-scapula-left" class="bone-part" data-name="Scapula (Left)" data-chinese="左肩胛骨">
+                        <path d="M 145 130 L 140 150 L 135 170 L 145 175 L 150 155 Z" fill="#f0e6d2" stroke="#8b7355" stroke-width="2"/>
+                        <text x="145" y="155" text-anchor="middle" font-size="9">肩胛</text>
+                    </g>
+                    <g id="bone-scapula-right" class="bone-part" data-name="Scapula (Right)" data-chinese="右肩胛骨">
+                        <path d="M 255 130 L 260 150 L 265 170 L 255 175 L 250 155 Z" fill="#f0e6d2" stroke="#8b7355" stroke-width="2"/>
+                        <text x="255" y="155" text-anchor="middle" font-size="9">肩胛</text>
+                    </g>
+
+                    <!-- Humerus -->
+                    <g id="bone-humerus-left" class="bone-part" data-name="Humerus (Left)" data-chinese="左肱骨">
+                        <line x1="145" y1="175" x2="130" y2="260" stroke="#f0e6d2" stroke-width="10" stroke-linecap="round"/>
+                        <text x="135" y="220" text-anchor="middle" font-size="10">肱骨</text>
+                    </g>
+                    <g id="bone-humerus-right" class="bone-part" data-name="Humerus (Right)" data-chinese="右肱骨">
+                        <line x1="255" y1="175" x2="270" y2="260" stroke="#f0e6d2" stroke-width="10" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Radius and Ulna -->
+                    <g id="bone-radius-left" class="bone-part" data-name="Radius (Left)" data-chinese="左桡骨">
+                        <line x1="130" y1="260" x2="115" y2="340" stroke="#f0e6d2" stroke-width="6" stroke-linecap="round"/>
+                        <text x="120" y="300" text-anchor="middle" font-size="9">桡骨</text>
+                    </g>
+                    <g id="bone-ulna-left" class="bone-part" data-name="Ulna (Left)" data-chinese="左尺骨">
+                        <line x1="130" y1="260" x2="125" y2="340" stroke="#f0e6d2" stroke-width="6" stroke-linecap="round"/>
+                    </g>
+                    <g id="bone-radius-right" class="bone-part" data-name="Radius (Right)" data-chinese="右桡骨">
+                        <line x1="270" y1="260" x2="285" y2="340" stroke="#f0e6d2" stroke-width="6" stroke-linecap="round"/>
+                        <text x="280" y="300" text-anchor="middle" font-size="9">桡骨</text>
+                    </g>
+                    <g id="bone-ulna-right" class="bone-part" data-name="Ulna (Right)" data-chinese="右尺骨">
+                        <line x1="270" y1="260" x2="275" y2="340" stroke="#f0e6d2" stroke-width="6" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Lumbar Vertebrae -->
+                    <g id="bone-lumbar" class="bone-part" data-name="Vertebrae Lumbales" data-chinese="腰椎">
+                        <rect x="190" y="200" width="20" height="50" rx="3" fill="#f0e6d2" stroke="#8b7355" stroke-width="2"/>
+                        <text x="200" y="230" text-anchor="middle" font-size="10">腰椎</text>
+                    </g>
+
+                    <!-- Pelvis / Os Coxae -->
+                    <g id="bone-pelvis" class="bone-part" data-name="Os Coxae" data-chinese="髋骨">
+                        <ellipse cx="200" cy="270" rx="60" ry="30" fill="none" stroke="#f0e6d2" stroke-width="10"/>
+                        <text x="200" y="275" text-anchor="middle" font-size="12">骨盆</text>
+                    </g>
+
+                    <!-- Femur -->
+                    <g id="bone-femur-left" class="bone-part" data-name="Femur (Left)" data-chinese="左股骨">
+                        <line x1="170" y1="300" x2="160" y2="430" stroke="#f0e6d2" stroke-width="12" stroke-linecap="round"/>
+                        <text x="165" y="370" text-anchor="middle" font-size="10">股骨</text>
+                    </g>
+                    <g id="bone-femur-right" class="bone-part" data-name="Femur (Right)" data-chinese="右股骨">
+                        <line x1="230" y1="300" x2="240" y2="430" stroke="#f0e6d2" stroke-width="12" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Patella -->
+                    <g id="bone-patella-left" class="bone-part" data-name="Patella (Left)" data-chinese="左髌骨">
+                        <circle cx="160" cy="430" r="8" fill="#f0e6d2" stroke="#8b7355" stroke-width="2"/>
+                        <text x="145" y="433" text-anchor="middle" font-size="9">髌骨</text>
+                    </g>
+                    <g id="bone-patella-right" class="bone-part" data-name="Patella (Right)" data-chinese="右髌骨">
+                        <circle cx="240" cy="430" r="8" fill="#f0e6d2" stroke="#8b7355" stroke-width="2"/>
+                    </g>
+
+                    <!-- Tibia and Fibula -->
+                    <g id="bone-tibia-left" class="bone-part" data-name="Tibia (Left)" data-chinese="左胫骨">
+                        <line x1="160" y1="438" x2="155" y2="550" stroke="#f0e6d2" stroke-width="10" stroke-linecap="round"/>
+                        <text x="150" y="500" text-anchor="middle" font-size="10">胫骨</text>
+                    </g>
+                    <g id="bone-fibula-left" class="bone-part" data-name="Fibula (Left)" data-chinese="左腓骨">
+                        <line x1="160" y1="438" x2="165" y2="550" stroke="#f0e6d2" stroke-width="6" stroke-linecap="round"/>
+                    </g>
+                    <g id="bone-tibia-right" class="bone-part" data-name="Tibia (Right)" data-chinese="右胫骨">
+                        <line x1="240" y1="438" x2="245" y2="550" stroke="#f0e6d2" stroke-width="10" stroke-linecap="round"/>
+                        <text x="250" y="500" text-anchor="middle" font-size="10">胫骨</text>
+                    </g>
+                    <g id="bone-fibula-right" class="bone-part" data-name="Fibula (Right)" data-chinese="右腓骨">
+                        <line x1="240" y1="438" x2="235" y2="550" stroke="#f0e6d2" stroke-width="6" stroke-linecap="round"/>
+                    </g>
+                </svg>
+
+                <div id="bone-info" class="bone-info hidden">
+                    <h3 id="bone-name-latin"></h3>
+                    <p id="bone-name-chinese"></p>
+                    <button id="close-info" class="btn-small">关闭</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>解剖学测验 / Anatomy Quiz</h2>
+                <div id="quiz-question"></div>
+                <div id="quiz-options"></div>
+                <div id="quiz-result" class="hidden"></div>
+                <div class="quiz-controls">
+                    <button id="next-question-btn" class="btn hidden">下一题 / Next</button>
+                    <button id="close-quiz-btn" class="btn">关闭测验 / Close Quiz</button>
+                </div>
+                <div class="quiz-stats">
+                    <p>得分 / Score: <span id="quiz-score">0</span> / <span id="quiz-total">0</span></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 骨骼拉丁文练习 - Skeleton Latin Practice</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
