@@ -296,6 +296,13 @@ class SkeletonPractice {
         }
     }
 
+    createBonePlaceholder() {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'bone-image-placeholder';
+        placeholder.textContent = '🦴';
+        return placeholder;
+    }
+
     displayQuestion() {
         if (!this.currentBone) return;
         
@@ -303,10 +310,12 @@ class SkeletonPractice {
         
         document.getElementById('boneCategory').textContent = this.getCategoryText(this.currentBone.category);
         
-        // Create bone image placeholder
-        const bonePlaceholder = `<div class="bone-image-placeholder">🦴</div>`;
-        
-        document.getElementById('boneName').innerHTML = bonePlaceholder + this.currentBone.chinese;
+        // Create bone image placeholder safely
+        const boneNameEl = document.getElementById('boneName');
+        boneNameEl.innerHTML = '';
+        boneNameEl.appendChild(this.createBonePlaceholder());
+        const nameText = document.createTextNode(this.currentBone.chinese);
+        boneNameEl.appendChild(nameText);
         
         let description = this.currentBone.description;
         if (showFinnish && this.currentBone.finnish) {
