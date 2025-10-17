@@ -103,8 +103,8 @@ class AnatomyPractice {
     }
 
     startQuiz() {
-        if (this.learnedBones.size === 0) {
-            alert('请先学习一些骨骼部位！ / Please learn some bone parts first!');
+        if (this.learnedBones.size < 4) {
+            alert('请至少学习4个骨骼部位才能开始测验！\nPlease learn at least 4 bone parts before starting the quiz!');
             return;
         }
 
@@ -232,21 +232,27 @@ class AnatomyPractice {
         const percentage = Math.round((this.quizScore / this.quizTotal) * 100);
         
         document.getElementById('quiz-question').textContent = '测验完成！ / Quiz Complete!';
-        document.getElementById('quiz-options').innerHTML = `
-            <div style="text-align: center; padding: 2rem;">
-                <h3 style="font-size: 2rem; color: #667eea; margin-bottom: 1rem;">
-                    ${this.quizScore} / ${this.quizTotal}
-                </h3>
-                <p style="font-size: 1.2rem; color: #333;">
-                    准确率 / Accuracy: ${percentage}%
-                </p>
-                <p style="margin-top: 1rem; color: #666;">
-                    ${percentage >= 80 ? '太棒了！/ Excellent!' : 
-                      percentage >= 60 ? '做得好！/ Good job!' : 
-                      '继续练习！/ Keep practicing!'}
-                </p>
-            </div>
-        `;
+        
+        const resultsDiv = document.createElement('div');
+        resultsDiv.className = 'quiz-completion';
+        
+        const scoreHeading = document.createElement('h3');
+        scoreHeading.textContent = `${this.quizScore} / ${this.quizTotal}`;
+        resultsDiv.appendChild(scoreHeading);
+        
+        const accuracyPara = document.createElement('p');
+        accuracyPara.textContent = `准确率 / Accuracy: ${percentage}%`;
+        resultsDiv.appendChild(accuracyPara);
+        
+        const encouragementPara = document.createElement('p');
+        encouragementPara.className = 'encouragement';
+        encouragementPara.textContent = percentage >= 80 ? '太棒了！/ Excellent!' : 
+                                         percentage >= 60 ? '做得好！/ Good job!' : 
+                                         '继续练习！/ Keep practicing!';
+        resultsDiv.appendChild(encouragementPara);
+        
+        document.getElementById('quiz-options').innerHTML = '';
+        document.getElementById('quiz-options').appendChild(resultsDiv);
         
         document.getElementById('quiz-result').classList.add('hidden');
         document.getElementById('next-question-btn').classList.add('hidden');

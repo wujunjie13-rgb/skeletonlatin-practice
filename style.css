@@ -299,6 +299,27 @@ main {
     color: #667eea;
 }
 
+.quiz-completion {
+    text-align: center;
+    padding: 2rem;
+}
+
+.quiz-completion h3 {
+    font-size: 2rem;
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+.quiz-completion p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.quiz-completion .encouragement {
+    margin-top: 1rem;
+    color: #666;
+}
+
 footer {
     background-color: rgba(255, 255, 255, 0.95);
     padding: 1rem;
