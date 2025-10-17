@@ -304,7 +304,7 @@ const skeletalData = {
                 id: "scaphoid",
                 chinese: "舟骨",
                 latin: "Os scaphoideum",
-                finnish: "Veneluuluu",
+                finnish: "Veneluu",
                 pronunciation: "os-skaf-OY-day-um",
                 features: ["舟骨结节 (Scaphoid tubercle)"],
                 description: "腕骨近侧列外侧骨"

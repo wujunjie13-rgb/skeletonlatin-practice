@@ -273,7 +273,7 @@ class SkeletonPractice {
         // Text-to-speech for pronunciation
         const text = this.currentBone.latin;
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'la'; // Latin
+        utterance.lang = 'en-US'; // Use English for better TTS support
         utterance.rate = 0.7;
         window.speechSynthesis.speak(utterance);
     }
