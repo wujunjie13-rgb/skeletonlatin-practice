@@ -4,11 +4,9 @@ class SkeletonPractice {
         this.allBones = this.flattenBones();
         this.currentBone = null;
         this.currentIndex = 0;
-        this.currentProfile = this.loadCurrentProfile();
         this.stats = this.loadStats();
         this.mistakes = this.loadMistakes();
         this.practiceMode = 'all'; // 'all' or 'mistakes'
-        this.selectedBodyParts = ['all'];
         
         this.initializeApp();
     }
@@ -19,25 +17,15 @@ class SkeletonPractice {
             skeletalData[category].bones.forEach(bone => {
                 bones.push({
                     ...bone,
-                    category: skeletalData[category].category,
-                    bodyPart: skeletalData[category].bodyPart
+                    category: skeletalData[category].category
                 });
             });
         }
         return bones;
     }
 
-    loadCurrentProfile() {
-        const saved = localStorage.getItem('currentProfile');
-        return saved || 'default';
-    }
-
-    saveCurrentProfile() {
-        localStorage.setItem('currentProfile', this.currentProfile);
-    }
-
     loadStats() {
-        const saved = localStorage.getItem(`skeletonStats_${this.currentProfile}`);
+        const saved = localStorage.getItem('skeletonStats');
         return saved ? JSON.parse(saved) : {
             totalAttempts: 0,
             correctAnswers: 0,
@@ -47,25 +35,16 @@ class SkeletonPractice {
     }
 
     saveStats() {
-        localStorage.setItem(`skeletonStats_${this.currentProfile}`, JSON.stringify(this.stats));
+        localStorage.setItem('skeletonStats', JSON.stringify(this.stats));
     }
 
     loadMistakes() {
-        const saved = localStorage.getItem(`skeletonMistakes_${this.currentProfile}`);
+        const saved = localStorage.getItem('skeletonMistakes');
         return saved ? JSON.parse(saved) : [];
     }
 
     saveMistakes() {
-        localStorage.setItem(`skeletonMistakes_${this.currentProfile}`, JSON.stringify(this.mistakes));
-    }
-
-    loadProfiles() {
-        const saved = localStorage.getItem('userProfiles');
-        return saved ? JSON.parse(saved) : ['default'];
-    }
-
-    saveProfiles(profiles) {
-        localStorage.setItem('userProfiles', JSON.stringify(profiles));
+        localStorage.setItem('skeletonMistakes', JSON.stringify(this.mistakes));
     }
 
     addMistake(bone) {
@@ -96,7 +75,7 @@ class SkeletonPractice {
     }
 
     clearMistakes() {
-        if (confirm('Are you sure you want to clear all mistakes?')) {
+        if (confirm('确定要清空错题库吗？')) {
             this.mistakes = [];
             this.saveMistakes();
             this.renderMistakes();
@@ -108,7 +87,6 @@ class SkeletonPractice {
         this.setupPracticeMode();
         this.setupBrowseMode();
         this.setupMistakesMode();
-        this.setupUserProfiles();
         this.renderStats();
         this.nextQuestion();
     }
@@ -150,42 +128,6 @@ class SkeletonPractice {
                 this.checkAnswer();
             }
         });
-
-        // Setup body part filter buttons
-        const bodyPartButtons = document.querySelectorAll('.body-part-btn');
-        bodyPartButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const part = button.dataset.part;
-                
-                if (part === 'all') {
-                    // Deselect all others
-                    bodyPartButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    this.selectedBodyParts = ['all'];
-                } else {
-                    // Remove 'all' if it's selected
-                    const allButton = document.querySelector('.body-part-btn[data-part="all"]');
-                    allButton.classList.remove('active');
-                    
-                    // Toggle this button
-                    button.classList.toggle('active');
-                    
-                    // Update selected body parts
-                    const activeButtons = document.querySelectorAll('.body-part-btn.active');
-                    if (activeButtons.length === 0) {
-                        // If nothing selected, select all
-                        allButton.classList.add('active');
-                        this.selectedBodyParts = ['all'];
-                    } else {
-                        this.selectedBodyParts = Array.from(activeButtons).map(btn => btn.dataset.part);
-                    }
-                }
-                
-                // Reset to start of practice with new filter
-                this.currentIndex = 0;
-                this.nextQuestion();
-            });
-        });
     }
 
     setupBrowseMode() {
@@ -207,7 +149,7 @@ class SkeletonPractice {
     setupMistakesMode() {
         document.getElementById('practiceMistakes').addEventListener('click', () => {
             if (this.mistakes.length === 0) {
-                alert('No mistakes in the bank!');
+                alert('错题库为空！');
                 return;
             }
             this.practiceMode = 'mistakes';
@@ -219,102 +161,15 @@ class SkeletonPractice {
         document.getElementById('clearMistakes').addEventListener('click', () => this.clearMistakes());
     }
 
-    setupUserProfiles() {
-        const profileSelect = document.getElementById('userProfile');
-        const addProfileBtn = document.getElementById('addProfile');
-        
-        // Load existing profiles
-        const profiles = this.loadProfiles();
-        profileSelect.innerHTML = '';
-        profiles.forEach(profile => {
-            const option = document.createElement('option');
-            option.value = profile;
-            option.textContent = profile.charAt(0).toUpperCase() + profile.slice(1);
-            if (profile === this.currentProfile) {
-                option.selected = true;
-            }
-            profileSelect.appendChild(option);
-        });
-
-        // Handle profile change
-        profileSelect.addEventListener('change', () => {
-            this.currentProfile = profileSelect.value;
-            this.saveCurrentProfile();
-            this.stats = this.loadStats();
-            this.mistakes = this.loadMistakes();
-            this.renderMistakes();
-            this.renderStats();
-        });
-
-        // Handle add new profile
-        addProfileBtn.addEventListener('click', () => {
-            const name = prompt('Enter new profile name:');
-            if (name && name.trim()) {
-                const profileName = name.trim().toLowerCase().replace(/\s+/g, '_');
-                const profiles = this.loadProfiles();
-                if (!profiles.includes(profileName)) {
-                    profiles.push(profileName);
-                    this.saveProfiles(profiles);
-                    
-                    // Add to select
-                    const option = document.createElement('option');
-                    option.value = profileName;
-                    option.textContent = name.trim();
-                    profileSelect.appendChild(option);
-                    
-                    // Switch to new profile
-                    profileSelect.value = profileName;
-                    this.currentProfile = profileName;
-                    this.saveCurrentProfile();
-                    this.stats = this.loadStats();
-                    this.mistakes = this.loadMistakes();
-                    this.renderMistakes();
-                    this.renderStats();
-                } else {
-                    alert('Profile already exists!');
-                }
-            }
-        });
-    }
-
-    getFilteredBones() {
-        if (this.practiceMode === 'mistakes') {
-            return this.mistakes;
-        }
-
-        if (this.selectedBodyParts.includes('all')) {
-            return this.allBones;
-        }
-
-        return this.allBones.filter(bone => 
-            this.selectedBodyParts.includes(bone.bodyPart)
-        );
-    }
-
-    shuffleArray(array) {
-        const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
-    }
-
     nextQuestion() {
-        const bones = this.getFilteredBones();
+        const bones = this.practiceMode === 'mistakes' ? this.mistakes : this.allBones;
         
         if (bones.length === 0) {
-            document.getElementById('feedback').innerHTML = '<p class="info">No bones to practice</p>';
+            document.getElementById('feedback').innerHTML = '<p class="info">没有可练习的内容</p>';
             return;
         }
 
-        // Randomize the bones if starting a new cycle
-        if (this.currentIndex === 0 || this.currentIndex >= bones.length) {
-            this.shuffledBones = this.shuffleArray(bones);
-            this.currentIndex = 0;
-        }
-
-        this.currentBone = this.shuffledBones[this.currentIndex];
+        this.currentBone = bones[this.currentIndex % bones.length];
         this.displayQuestion();
         this.updateProgress();
         
@@ -328,13 +183,18 @@ class SkeletonPractice {
     }
 
     displayQuestion() {
+        const showFinnish = document.getElementById('showFinnish').checked;
+        
         document.getElementById('boneCategory').textContent = this.currentBone.category;
-        document.getElementById('boneName').textContent = this.currentBone.english;
+        document.getElementById('boneName').textContent = this.currentBone.chinese;
         
         let description = this.currentBone.description;
+        if (showFinnish) {
+            description += `<br><strong>芬兰语:</strong> ${this.currentBone.finnish}`;
+        }
         
         if (this.currentBone.features && this.currentBone.features.length > 0) {
-            description += '<br><strong>Key Features:</strong><br>';
+            description += '<br><strong>主要特征:</strong><br>';
             description += '<ul>';
             this.currentBone.features.forEach(feature => {
                 description += `<li>${feature}</li>`;
@@ -350,7 +210,7 @@ class SkeletonPractice {
         const correctAnswer = this.currentBone.latin;
         
         if (!userAnswer) {
-            document.getElementById('feedback').innerHTML = '<p class="warning">Please enter an answer</p>';
+            document.getElementById('feedback').innerHTML = '<p class="warning">请输入答案</p>';
             return;
         }
 
@@ -371,17 +231,17 @@ class SkeletonPractice {
             }
             
             document.getElementById('feedback').innerHTML = `
-                <p class="correct">✓ Correct!</p>
-                <p>Latin name: <strong>${correctAnswer}</strong></p>
-                <p>Pronunciation: ${this.currentBone.pronunciation}</p>
+                <p class="correct">✓ 正确！</p>
+                <p>拉丁名: <strong>${correctAnswer}</strong></p>
+                <p>发音: ${this.currentBone.pronunciation}</p>
             `;
         } else {
             this.addMistake(this.currentBone);
             document.getElementById('feedback').innerHTML = `
-                <p class="incorrect">✗ Incorrect</p>
-                <p>Your answer: <strong>${userAnswer}</strong></p>
-                <p>Correct answer: <strong>${correctAnswer}</strong></p>
-                <p>Pronunciation: ${this.currentBone.pronunciation}</p>
+                <p class="incorrect">✗ 错误</p>
+                <p>您的答案: <strong>${userAnswer}</strong></p>
+                <p>正确答案: <strong>${correctAnswer}</strong></p>
+                <p>发音: ${this.currentBone.pronunciation}</p>
             `;
         }
         
@@ -403,8 +263,8 @@ class SkeletonPractice {
 
     showAnswer() {
         document.getElementById('feedback').innerHTML = `
-            <p class="info">Answer: <strong>${this.currentBone.latin}</strong></p>
-            <p>Pronunciation: ${this.currentBone.pronunciation}</p>
+            <p class="info">答案: <strong>${this.currentBone.latin}</strong></p>
+            <p>发音: ${this.currentBone.pronunciation}</p>
         `;
         this.addMistake(this.currentBone);
     }
@@ -413,14 +273,14 @@ class SkeletonPractice {
         // Text-to-speech for pronunciation
         const text = this.currentBone.latin;
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
+        utterance.lang = 'en-US'; // Use English for better TTS support
         utterance.rate = 0.7;
         window.speechSynthesis.speak(utterance);
     }
 
     updateProgress() {
-        const bones = this.getFilteredBones();
-        const current = this.currentIndex + 1;
+        const bones = this.practiceMode === 'mistakes' ? this.mistakes : this.allBones;
+        const current = (this.currentIndex % bones.length) + 1;
         const total = bones.length;
         
         document.getElementById('progressText').textContent = `${current}/${total}`;
@@ -430,9 +290,9 @@ class SkeletonPractice {
     }
 
     resetProgress() {
-        if (confirm('Are you sure you want to reset all progress? This will clear statistics and mistakes.')) {
-            localStorage.removeItem(`skeletonStats_${this.currentProfile}`);
-            localStorage.removeItem(`skeletonMistakes_${this.currentProfile}`);
+        if (confirm('确定要重置所有进度吗？这将清除统计数据和错题库。')) {
+            localStorage.removeItem('skeletonStats');
+            localStorage.removeItem('skeletonMistakes');
             this.stats = this.loadStats();
             this.mistakes = this.loadMistakes();
             this.practiceMode = 'all';
@@ -454,66 +314,43 @@ class SkeletonPractice {
         
         if (searchTerm) {
             bones = bones.filter(b => 
-                b.english.toLowerCase().includes(searchTerm) ||
-                b.latin.toLowerCase().includes(searchTerm)
+                b.chinese.toLowerCase().includes(searchTerm) ||
+                b.latin.toLowerCase().includes(searchTerm) ||
+                b.finnish.toLowerCase().includes(searchTerm)
             );
         }
-
-        // Group bones by category
-        const groupedBones = {};
-        bones.forEach(bone => {
-            if (!groupedBones[bone.category]) {
-                groupedBones[bone.category] = [];
-            }
-            groupedBones[bone.category].push(bone);
-        });
         
         const boneList = document.getElementById('boneList');
         boneList.innerHTML = '';
         
-        // Render bones grouped by category
-        Object.keys(groupedBones).forEach(category => {
-            const categorySection = document.createElement('div');
-            categorySection.className = 'category-section';
+        bones.forEach(bone => {
+            const card = document.createElement('div');
+            card.className = 'bone-card';
             
-            const categoryHeader = document.createElement('h3');
-            categoryHeader.className = 'category-header';
-            categoryHeader.textContent = category;
-            categorySection.appendChild(categoryHeader);
+            let featuresHtml = '';
+            if (bone.features && bone.features.length > 0) {
+                featuresHtml = '<ul class="features-list">';
+                bone.features.forEach(feature => {
+                    featuresHtml += `<li>${feature}</li>`;
+                });
+                featuresHtml += '</ul>';
+            }
             
-            const categoryGrid = document.createElement('div');
-            categoryGrid.className = 'bone-grid';
+            card.innerHTML = `
+                <h3>${bone.chinese}</h3>
+                <p><strong>拉丁名:</strong> ${bone.latin}</p>
+                <p><strong>芬兰语:</strong> ${bone.finnish}</p>
+                <p><strong>发音:</strong> ${bone.pronunciation}</p>
+                <p><strong>分类:</strong> ${bone.category}</p>
+                <p>${bone.description}</p>
+                ${featuresHtml}
+            `;
             
-            groupedBones[category].forEach(bone => {
-                const card = document.createElement('div');
-                card.className = 'bone-card';
-                
-                let featuresHtml = '';
-                if (bone.features && bone.features.length > 0) {
-                    featuresHtml = '<ul class="features-list">';
-                    bone.features.forEach(feature => {
-                        featuresHtml += `<li>${feature}</li>`;
-                    });
-                    featuresHtml += '</ul>';
-                }
-                
-                card.innerHTML = `
-                    <h4>${bone.english}</h4>
-                    <p><strong>Latin:</strong> ${bone.latin}</p>
-                    <p><strong>Pronunciation:</strong> ${bone.pronunciation}</p>
-                    <p>${bone.description}</p>
-                    ${featuresHtml}
-                `;
-                
-                categoryGrid.appendChild(card);
-            });
-            
-            categorySection.appendChild(categoryGrid);
-            boneList.appendChild(categorySection);
+            boneList.appendChild(card);
         });
         
         if (bones.length === 0) {
-            boneList.innerHTML = '<p class="info">No matching bones found</p>';
+            boneList.innerHTML = '<p class="info">未找到匹配的骨骼</p>';
         }
     }
 
@@ -522,7 +359,7 @@ class SkeletonPractice {
         mistakesList.innerHTML = '';
         
         if (this.mistakes.length === 0) {
-            mistakesList.innerHTML = '<p class="info">No mistakes yet - keep practicing!</p>';
+            mistakesList.innerHTML = '<p class="info">错题库为空，继续加油！</p>';
             return;
         }
         
@@ -533,15 +370,16 @@ class SkeletonPractice {
             const card = document.createElement('div');
             card.className = 'mistake-card';
             
-            const date = new Date(bone.timestamp).toLocaleString('en-US');
+            const date = new Date(bone.timestamp).toLocaleString('zh-CN');
             
             card.innerHTML = `
-                <h3>${bone.english}</h3>
-                <p><strong>Latin:</strong> ${bone.latin}</p>
-                <p><strong>Pronunciation:</strong> ${bone.pronunciation}</p>
-                <p><strong>Mistake count:</strong> ${bone.attempts || 1}</p>
-                <p><strong>Last mistake:</strong> ${date}</p>
-                <button class="remove-mistake" data-id="${bone.id}">Remove</button>
+                <h3>${bone.chinese}</h3>
+                <p><strong>拉丁名:</strong> ${bone.latin}</p>
+                <p><strong>芬兰语:</strong> ${bone.finnish}</p>
+                <p><strong>发音:</strong> ${bone.pronunciation}</p>
+                <p><strong>错误次数:</strong> ${bone.attempts || 1}</p>
+                <p><strong>最后错误时间:</strong> ${date}</p>
+                <button class="remove-mistake" data-id="${bone.id}">移除</button>
             `;
             
             card.querySelector('.remove-mistake').addEventListener('click', () => {

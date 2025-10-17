@@ -1,98 +1,122 @@
-# 骨架拉丁命名练习 (Skeleton Latin Practice)
+# Skeleton Latin Practice
 
-一个用于练习人体骨架拉丁命名的交互式学习网站。
+An interactive learning website for practicing Latin names of human skeletal anatomy.
 
-## 功能特点 (Features)
+## Features
 
-### 1. 全面的骨骼数据
-- **完整的人体骨架数据**：包括颅骨、脊柱、胸廓、上肢骨、骨盆带和下肢骨
-- **详细的解剖特征**：每块骨头的面、凸起、孔洞等重要解剖标志
-- **多语言支持**：
-  - 中文名称
-  - 拉丁学名
-  - 芬兰语名称
-  - 发音指导
+### 1. Comprehensive Bone Data
+- **Complete human skeleton data**: Including skull, spine, thorax, upper limb bones, pelvic girdle, and lower limb bones
+- **Detailed anatomical features**: Important anatomical landmarks including surfaces, processes, and foramina
+- **Bilingual support**:
+  - English names
+  - Latin nomenclature
+  - Pronunciation guide
 
-### 2. 练习模式
-- **交互式问答**：输入拉丁名称进行练习
-- **即时反馈**：立即显示答案是否正确
-- **自动发音**：支持文本转语音功能，可播放骨骼的拉丁名称发音
-- **进度跟踪**：显示当前练习进度
-- **设置选项**：
-  - 显示/隐藏芬兰语
-  - 启用/禁用自动发音
+### 2. Practice Mode
+- **Interactive quiz**: Enter Latin names for practice
+- **Instant feedback**: Immediate display of correct/incorrect answers
+- **Auto pronunciation**: Text-to-speech support for Latin bone names
+- **Progress tracking**: Shows current practice progress
+- **Body part filtering**: Practice specific body parts or all together
+  - Skull
+  - Spine
+  - Thorax
+  - Shoulder (Clavicle, Scapula)
+  - Arm (Humerus)
+  - Forearm (Radius, Ulna)
+  - Hand (Carpals, Metacarpals, Phalanges)
+  - Pelvis
+  - Femur (Thigh)
+  - Patella (Knee)
+  - Tibia & Fibula (Lower leg)
+  - Foot (Tarsals, Metatarsals, Phalanges)
+- **Randomized questions**: Each practice session randomizes the order
+- **Settings options**:
+  - Enable/disable auto pronunciation
 
-### 3. 浏览模式
-- **分类浏览**：按骨骼分类（颅骨、脊柱等）筛选
-- **搜索功能**：快速查找特定骨骼
-- **详细信息**：查看每块骨骼的完整信息
+### 3. Browse Mode
+- **Categorized browsing**: Filter by skeletal region
+- **Organized by body parts**: Bones grouped by anatomical regions for easy reference
+- **Search functionality**: Quickly find specific bones
+- **Detailed information**: View complete information for each bone
 
-### 4. 错题库系统
-- **自动收集错题**：答错的题目自动加入错题库
-- **重复练习**：可以专门练习错题库中的内容
-- **错误统计**：记录每道题的错误次数
-- **智能移除**：答对3次后自动从错题库移除
+### 4. Mistake Bank System
+- **Auto-collect mistakes**: Incorrectly answered questions automatically added to mistake bank
+- **Repeat practice**: Practice specifically from the mistake bank
+- **Mistake statistics**: Track error count for each bone
+- **Smart removal**: Automatically removed after 3 correct answers
+- **Multiple user profiles**: Each user can maintain their own mistake bank
+  - Create separate profiles for different users
+  - Switch between profiles
+  - Independent progress tracking per profile
 
-### 5. 学习统计
-- **总题数**：记录总共练习的题目数量
-- **正确率**：实时计算答题正确率
-- **错题数**：显示当前错题库中的题目数量
-- **已掌握**：显示已经掌握的骨骼数量
+### 5. Learning Statistics
+- **Total questions**: Track total number of practice questions
+- **Accuracy rate**: Real-time calculation of answer accuracy
+- **Mistake count**: Display current number of bones in mistake bank
+- **Mastered count**: Show number of mastered bones
 
-## 使用方法 (Usage)
+## Usage
 
-1. 打开 `index.html` 文件在浏览器中运行
-2. 选择不同的模式：
-   - **练习模式**：进行骨骼名称练习
-   - **浏览骨骼**：查看所有骨骼的详细信息
-   - **错题库**：查看和练习错题
-   - **统计**：查看学习进度和统计数据
+1. Open `index.html` in a browser
+2. Select different modes:
+   - **Practice**: Practice bone names
+   - **Browse**: View all bones with detailed information
+   - **Mistakes**: View and practice mistakes
+   - **Statistics**: View learning progress and statistics
 
-## 技术栈 (Tech Stack)
+## Tech Stack
 
 - HTML5
 - CSS3
 - Vanilla JavaScript
-- LocalStorage（用于数据持久化）
-- Web Speech API（用于发音功能）
+- LocalStorage (for data persistence)
+- Web Speech API (for pronunciation)
 
-## 骨骼分类 (Bone Categories)
+## Bone Categories
 
-1. **颅骨 (Skull)**：14块骨骼
-   - 包括额骨、顶骨、枕骨、颞骨、蝶骨、筛骨等
+1. **Skull**: 14 bones
+   - Including frontal, parietal, occipital, temporal, sphenoid, ethmoid, etc.
 
-2. **脊柱 (Vertebral Column)**：7种类型
-   - 颈椎、胸椎、腰椎、骶骨、尾骨等
+2. **Vertebral Column**: 7 types
+   - Cervical, thoracic, lumbar vertebrae, sacrum, coccyx, etc.
 
-3. **胸廓 (Thorax)**：5种类型
-   - 胸骨、肋骨（真肋、假肋、浮肋）
+3. **Thorax**: 5 types
+   - Sternum, ribs (true ribs, false ribs, floating ribs)
 
-4. **上肢骨 (Upper Limb)**：15种类型
-   - 锁骨、肩胛骨、肱骨、桡骨、尺骨、腕骨、掌骨、指骨
+4. **Upper Limb Bones**: Multiple types organized by region
+   - Shoulder: Clavicle, scapula
+   - Arm: Humerus
+   - Forearm: Radius, ulna
+   - Hand: Carpals, metacarpals, phalanges
 
-5. **骨盆带 (Pelvic Girdle)**：4种类型
-   - 髋骨、髂骨、坐骨、耻骨
+5. **Pelvic Girdle**: 4 types
+   - Hip bone, ilium, ischium, pubis
 
-6. **下肢骨 (Lower Limb)**：11种类型
-   - 股骨、髌骨、胫骨、腓骨、跗骨、跖骨、趾骨等
+6. **Lower Limb Bones**: Multiple types organized by region
+   - Femur (thigh)
+   - Patella (knee)
+   - Tibia & Fibula (lower leg)
+   - Foot: Tarsals, metatarsals, phalanges
 
-## 数据持久化 (Data Persistence)
+## Data Persistence
 
-应用使用浏览器的 LocalStorage 来保存：
-- 学习进度
-- 答题统计
-- 错题库内容
+The application uses browser LocalStorage to save:
+- Learning progress per user profile
+- Answer statistics per user profile
+- Mistake bank content per user profile
+- User profiles
 
-## 浏览器兼容性 (Browser Compatibility)
+## Browser Compatibility
 
-建议使用现代浏览器：
-- Chrome/Edge (推荐)
+Recommended modern browsers:
+- Chrome/Edge (recommended)
 - Firefox
 - Safari
 
-## 开发 (Development)
+## Development
 
-本项目为纯静态网站，无需构建步骤。直接在浏览器中打开 `index.html` 即可使用。
+This project is a pure static website with no build steps. Simply open `index.html` in a browser to use.
 
 ## License
 

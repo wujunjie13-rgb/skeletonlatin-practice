@@ -1,37 +1,52 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>骨架拉丁命名练习 - Skeleton Latin Practice</title>
+    <title>Skeleton Latin Practice</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>骨架拉丁命名练习</h1>
-            <p class="subtitle">Skeleton Latin Naming Practice</p>
+            <h1>Skeleton Latin Practice</h1>
+            <p class="subtitle">Learn anatomical Latin names</p>
         </header>
 
         <nav class="tabs">
-            <button class="tab-button active" data-tab="practice">练习模式</button>
-            <button class="tab-button" data-tab="browse">浏览骨骼</button>
-            <button class="tab-button" data-tab="mistakes">错题库</button>
-            <button class="tab-button" data-tab="stats">统计</button>
+            <button class="tab-button active" data-tab="practice">Practice</button>
+            <button class="tab-button" data-tab="browse">Browse</button>
+            <button class="tab-button" data-tab="mistakes">Mistakes</button>
+            <button class="tab-button" data-tab="stats">Statistics</button>
         </nav>
 
         <!-- Practice Mode -->
         <div id="practice" class="tab-content active">
+            <div class="body-part-filter">
+                <h3>Select Body Parts to Practice:</h3>
+                <div class="body-part-buttons">
+                    <button class="body-part-btn active" data-part="all">All</button>
+                    <button class="body-part-btn" data-part="skull">Skull</button>
+                    <button class="body-part-btn" data-part="vertebral">Spine</button>
+                    <button class="body-part-btn" data-part="thorax">Thorax</button>
+                    <button class="body-part-btn" data-part="hand">Hand</button>
+                    <button class="body-part-btn" data-part="forearm">Forearm</button>
+                    <button class="body-part-btn" data-part="arm">Arm</button>
+                    <button class="body-part-btn" data-part="shoulder">Shoulder</button>
+                    <button class="body-part-btn" data-part="pelvis">Pelvis</button>
+                    <button class="body-part-btn" data-part="femur">Femur</button>
+                    <button class="body-part-btn" data-part="patella">Patella</button>
+                    <button class="body-part-btn" data-part="tibia-fibula">Tibia & Fibula</button>
+                    <button class="body-part-btn" data-part="foot">Foot</button>
+                </div>
+            </div>
+            
             <div class="settings">
                 <label>
-                    <input type="checkbox" id="showFinnish" checked>
-                    显示芬兰语 (Show Finnish)
-                </label>
-                <label>
                     <input type="checkbox" id="playPronunciation" checked>
-                    自动发音 (Auto pronunciation)
+                    Auto pronunciation
                 </label>
-                <button id="resetProgress">重置进度 (Reset)</button>
+                <button id="resetProgress">Reset Progress</button>
             </div>
 
             <div class="quiz-container">
@@ -41,20 +56,20 @@
                         <h3 id="boneName"></h3>
                         <p id="boneDescription"></p>
                     </div>
-                    <button id="playAudio" class="audio-button">🔊 发音</button>
+                    <button id="playAudio" class="audio-button">🔊 Pronunciation</button>
                 </div>
 
                 <div class="answer-area">
-                    <input type="text" id="answerInput" placeholder="输入拉丁名称...">
-                    <button id="submitAnswer">提交</button>
-                    <button id="showAnswer">显示答案</button>
-                    <button id="nextQuestion">下一题</button>
+                    <input type="text" id="answerInput" placeholder="Enter Latin name...">
+                    <button id="submitAnswer">Submit</button>
+                    <button id="showAnswer">Show Answer</button>
+                    <button id="nextQuestion">Next</button>
                 </div>
 
                 <div class="feedback" id="feedback"></div>
 
                 <div class="progress">
-                    <p>进度: <span id="progressText">0/0</span></p>
+                    <p>Progress: <span id="progressText">0/0</span></p>
                     <div class="progress-bar">
                         <div id="progressFill" class="progress-fill"></div>
                     </div>
@@ -66,9 +81,9 @@
         <div id="browse" class="tab-content">
             <div class="filter-area">
                 <select id="categoryFilter">
-                    <option value="all">所有分类 (All Categories)</option>
+                    <option value="all">All Body Parts</option>
                 </select>
-                <input type="text" id="searchInput" placeholder="搜索骨骼名称...">
+                <input type="text" id="searchInput" placeholder="Search bone names...">
             </div>
 
             <div id="boneList" class="bone-list"></div>
@@ -76,32 +91,39 @@
 
         <!-- Mistakes Bank -->
         <div id="mistakes" class="tab-content">
-            <h2>错题库 (Mistake Bank)</h2>
+            <h2>Mistake Bank</h2>
+            <div class="user-profile">
+                <label for="userProfile">User Profile:</label>
+                <select id="userProfile">
+                    <option value="default">Default</option>
+                </select>
+                <button id="addProfile">+ New Profile</button>
+            </div>
             <div class="mistakes-controls">
-                <button id="practiceMistakes">练习错题</button>
-                <button id="clearMistakes">清空错题库</button>
+                <button id="practiceMistakes">Practice Mistakes</button>
+                <button id="clearMistakes">Clear Mistakes</button>
             </div>
             <div id="mistakesList" class="mistakes-list"></div>
         </div>
 
         <!-- Statistics -->
         <div id="stats" class="tab-content">
-            <h2>学习统计 (Statistics)</h2>
+            <h2>Statistics</h2>
             <div class="stats-container">
                 <div class="stat-card">
-                    <h3>总题数</h3>
+                    <h3>Total Questions</h3>
                     <p id="totalQuestions">0</p>
                 </div>
                 <div class="stat-card">
-                    <h3>正确率</h3>
+                    <h3>Accuracy</h3>
                     <p id="accuracy">0%</p>
                 </div>
                 <div class="stat-card">
-                    <h3>错题数</h3>
+                    <h3>Mistakes</h3>
                     <p id="mistakeCount">0</p>
                 </div>
                 <div class="stat-card">
-                    <h3>已掌握</h3>
+                    <h3>Mastered</h3>
                     <p id="masteredCount">0</p>
                 </div>
             </div>

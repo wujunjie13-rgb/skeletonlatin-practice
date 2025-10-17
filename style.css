@@ -87,6 +87,46 @@ header h1 {
 }
 
 /* Practice Mode */
+.body-part-filter {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.body-part-filter h3 {
+    margin-bottom: 15px;
+    color: #667eea;
+}
+
+.body-part-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.body-part-btn {
+    padding: 10px 20px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.body-part-btn:hover {
+    background: #f0f0ff;
+    transform: translateY(-2px);
+}
+
+.body-part-btn.active {
+    background: #667eea;
+    color: white;
+}
+
 .settings {
     background: #f9f9f9;
     padding: 15px;
@@ -324,6 +364,24 @@ header h1 {
 }
 
 /* Browse Mode */
+.category-section {
+    margin-bottom: 40px;
+}
+
+.category-header {
+    color: #667eea;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+}
+
+.bone-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
 .filter-area {
     display: flex;
     gap: 15px;
@@ -368,6 +426,12 @@ header h1 {
     border-color: #667eea;
 }
 
+.bone-card h4 {
+    color: #667eea;
+    margin-bottom: 12px;
+    font-size: 1.3em;
+}
+
 .bone-card h3 {
     color: #667eea;
     margin-bottom: 15px;
@@ -394,6 +458,47 @@ header h1 {
 }
 
 /* Mistakes Mode */
+.user-profile {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.user-profile label {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.user-profile select {
+    padding: 8px 15px;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-size: 1em;
+    background: white;
+    cursor: pointer;
+}
+
+.user-profile button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    background: #28a745;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.user-profile button:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
 .mistakes-controls {
     display: flex;
     gap: 15px;
