@@ -189,6 +189,8 @@ class SkeletonPractice {
         document.getElementById('boneName').textContent = this.currentBone.chinese;
         
         let description = this.currentBone.description;
+        description += `<br><strong>拉丁名:</strong> ${this.currentBone.latin}`;
+        description += `<br><strong>发音:</strong> ${this.currentBone.pronunciation}`;
         if (showFinnish) {
             description += `<br><strong>芬兰语:</strong> ${this.currentBone.finnish}`;
         }
