@@ -75,7 +75,7 @@ class SkeletonPractice {
     }
 
     clearMistakes() {
-        if (confirm('确定要清空错题库吗？')) {
+        if (confirm('Are you sure you want to clear the mistake bank?')) {
             this.mistakes = [];
             this.saveMistakes();
             this.renderMistakes();
@@ -149,7 +149,7 @@ class SkeletonPractice {
     setupMistakesMode() {
         document.getElementById('practiceMistakes').addEventListener('click', () => {
             if (this.mistakes.length === 0) {
-                alert('错题库为空！');
+                alert('Mistake bank is empty!');
                 return;
             }
             this.practiceMode = 'mistakes';
@@ -165,7 +165,7 @@ class SkeletonPractice {
         const bones = this.practiceMode === 'mistakes' ? this.mistakes : this.allBones;
         
         if (bones.length === 0) {
-            document.getElementById('feedback').innerHTML = '<p class="info">没有可练习的内容</p>';
+            document.getElementById('feedback').innerHTML = '<p class="info">No content available to practice</p>';
             return;
         }
 
@@ -186,15 +186,15 @@ class SkeletonPractice {
         const showFinnish = document.getElementById('showFinnish').checked;
         
         document.getElementById('boneCategory').textContent = this.currentBone.category;
-        document.getElementById('boneName').textContent = this.currentBone.chinese;
+        document.getElementById('boneName').textContent = this.currentBone.latin;
         
         let description = this.currentBone.description;
         if (showFinnish) {
-            description += `<br><strong>芬兰语:</strong> ${this.currentBone.finnish}`;
+            description += `<br><strong>Finnish:</strong> ${this.currentBone.finnish}`;
         }
         
         if (this.currentBone.features && this.currentBone.features.length > 0) {
-            description += '<br><strong>主要特征:</strong><br>';
+            description += '<br><strong>Main features:</strong><br>';
             description += '<ul>';
             this.currentBone.features.forEach(feature => {
                 description += `<li>${feature}</li>`;
@@ -210,7 +210,7 @@ class SkeletonPractice {
         const correctAnswer = this.currentBone.latin;
         
         if (!userAnswer) {
-            document.getElementById('feedback').innerHTML = '<p class="warning">请输入答案</p>';
+            document.getElementById('feedback').innerHTML = '<p class="warning">Please enter an answer</p>';
             return;
         }
 
@@ -231,17 +231,17 @@ class SkeletonPractice {
             }
             
             document.getElementById('feedback').innerHTML = `
-                <p class="correct">✓ 正确！</p>
-                <p>拉丁名: <strong>${correctAnswer}</strong></p>
-                <p>发音: ${this.currentBone.pronunciation}</p>
+                <p class="correct">✓ Correct!</p>
+                <p>Latin name: <strong>${correctAnswer}</strong></p>
+                <p>Pronunciation: ${this.currentBone.pronunciation}</p>
             `;
         } else {
             this.addMistake(this.currentBone);
             document.getElementById('feedback').innerHTML = `
-                <p class="incorrect">✗ 错误</p>
-                <p>您的答案: <strong>${userAnswer}</strong></p>
-                <p>正确答案: <strong>${correctAnswer}</strong></p>
-                <p>发音: ${this.currentBone.pronunciation}</p>
+                <p class="incorrect">✗ Incorrect</p>
+                <p>Your answer: <strong>${userAnswer}</strong></p>
+                <p>Correct answer: <strong>${correctAnswer}</strong></p>
+                <p>Pronunciation: ${this.currentBone.pronunciation}</p>
             `;
         }
         
@@ -263,8 +263,8 @@ class SkeletonPractice {
 
     showAnswer() {
         document.getElementById('feedback').innerHTML = `
-            <p class="info">答案: <strong>${this.currentBone.latin}</strong></p>
-            <p>发音: ${this.currentBone.pronunciation}</p>
+            <p class="info">Answer: <strong>${this.currentBone.latin}</strong></p>
+            <p>Pronunciation: ${this.currentBone.pronunciation}</p>
         `;
         this.addMistake(this.currentBone);
     }
@@ -290,7 +290,7 @@ class SkeletonPractice {
     }
 
     resetProgress() {
-        if (confirm('确定要重置所有进度吗？这将清除统计数据和错题库。')) {
+        if (confirm('Are you sure you want to reset all progress? This will clear statistics and mistake bank.')) {
             localStorage.removeItem('skeletonStats');
             localStorage.removeItem('skeletonMistakes');
             this.stats = this.loadStats();
@@ -314,7 +314,6 @@ class SkeletonPractice {
         
         if (searchTerm) {
             bones = bones.filter(b => 
-                b.chinese.toLowerCase().includes(searchTerm) ||
                 b.latin.toLowerCase().includes(searchTerm) ||
                 b.finnish.toLowerCase().includes(searchTerm)
             );
@@ -337,11 +336,10 @@ class SkeletonPractice {
             }
             
             card.innerHTML = `
-                <h3>${bone.chinese}</h3>
-                <p><strong>拉丁名:</strong> ${bone.latin}</p>
-                <p><strong>芬兰语:</strong> ${bone.finnish}</p>
-                <p><strong>发音:</strong> ${bone.pronunciation}</p>
-                <p><strong>分类:</strong> ${bone.category}</p>
+                <h3>${bone.latin}</h3>
+                <p><strong>Finnish:</strong> ${bone.finnish}</p>
+                <p><strong>Pronunciation:</strong> ${bone.pronunciation}</p>
+                <p><strong>Category:</strong> ${bone.category}</p>
                 <p>${bone.description}</p>
                 ${featuresHtml}
             `;
@@ -350,7 +348,7 @@ class SkeletonPractice {
         });
         
         if (bones.length === 0) {
-            boneList.innerHTML = '<p class="info">未找到匹配的骨骼</p>';
+            boneList.innerHTML = '<p class="info">No matching bones found</p>';
         }
     }
 
@@ -359,7 +357,7 @@ class SkeletonPractice {
         mistakesList.innerHTML = '';
         
         if (this.mistakes.length === 0) {
-            mistakesList.innerHTML = '<p class="info">错题库为空，继续加油！</p>';
+            mistakesList.innerHTML = '<p class="info">Mistake bank is empty. Keep it up!</p>';
             return;
         }
         
@@ -370,16 +368,15 @@ class SkeletonPractice {
             const card = document.createElement('div');
             card.className = 'mistake-card';
             
-            const date = new Date(bone.timestamp).toLocaleString('zh-CN');
+            const date = new Date(bone.timestamp).toLocaleString('en-US');
             
             card.innerHTML = `
-                <h3>${bone.chinese}</h3>
-                <p><strong>拉丁名:</strong> ${bone.latin}</p>
-                <p><strong>芬兰语:</strong> ${bone.finnish}</p>
-                <p><strong>发音:</strong> ${bone.pronunciation}</p>
-                <p><strong>错误次数:</strong> ${bone.attempts || 1}</p>
-                <p><strong>最后错误时间:</strong> ${date}</p>
-                <button class="remove-mistake" data-id="${bone.id}">移除</button>
+                <h3>${bone.latin}</h3>
+                <p><strong>Finnish:</strong> ${bone.finnish}</p>
+                <p><strong>Pronunciation:</strong> ${bone.pronunciation}</p>
+                <p><strong>Error count:</strong> ${bone.attempts || 1}</p>
+                <p><strong>Last error:</strong> ${date}</p>
+                <button class="remove-mistake" data-id="${bone.id}">Remove</button>
             `;
             
             card.querySelector('.remove-mistake').addEventListener('click', () => {
